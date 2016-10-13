@@ -49,6 +49,8 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['text_documentation'] = $this->language->get('text_documentation');
+		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
+		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
 
 		if (isset($this->error['warning'])) {
@@ -89,10 +91,22 @@ class ControllerModuleRees46 extends Controller {
 
 		$data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL');
 
-		if (isset($this->request->post['setting'])) {
-			$data['setting'] = $this->request->post['setting'];
+		if (isset($this->request->post['rees46_shop_id'])) {
+			$data['rees46_shop_id'] = $this->request->post['rees46_shop_id'];
 		} else {
-			$data['setting'] = $this->config->get('rees46');
+			$data['rees46_shop_id'] = $this->config->get('rees46_shop_id');
+		}
+
+		if (isset($this->request->post['rees46_secret_key'])) {
+			$data['rees46_secret_key'] = $this->request->post['rees46_secret_key'];
+		} else {
+			$data['rees46_secret_key'] = $this->config->get('rees46_secret_key');
+		}
+
+		if (isset($this->request->post['rees46_status'])) {
+			$data['rees46_status'] = $this->request->post['rees46_status'];
+		} else {
+			$data['rees46_status'] = $this->config->get('rees46_status');
 		}
 
 		if (isset($this->request->get['module_id'])) {

@@ -34,15 +34,27 @@
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-settings">
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="input-setting-status"><?php echo $entry_status; ?></label>
+								<label class="col-sm-2 control-label" for="input-shop_id"><?php echo $entry_shop_id; ?></label>
+								<div class="col-sm-2">
+									<input type="text" name="setting[rees46_shop_id]" value="<?php echo $rees46_shop_id; ?>" id="input-shop_id" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-secret_key"><?php echo $entry_secret_key; ?></label>
+								<div class="col-sm-2">
+									<input type="text" name="setting[rees46_secret_key]" value="<?php echo $rees46_secret_key; ?>" id="input-secret_key" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_status; ?></label>
 								<div class="col-sm-10">
 									<div class="btn-group" data-toggle="buttons">
-										<?php if ($setting['status']) { ?>
-										<label class="btn btn-info"><input type="radio" name="setting[status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info active"><input type="radio" name="setting[status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+										<?php if ($rees46_status) { ?>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
 										<?php } else { ?>
-										<label class="btn btn-info active"><input type="radio" name="setting[status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info"><input type="radio" name="setting[status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
 										<?php } ?>
 									</div>
 								</div>

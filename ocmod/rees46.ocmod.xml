@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<code>rees46</code>
+	<name>REES46</name>
+	<version>0.1.0</version>
+	<author>p0v1n0m</author>
+	<link>rees46.com</link>
+	<file path="catalog/controller/common/footer.php">
+		<operation>
+			<search><![CDATA[
+$this->load->model('catalog/information');
+			]]></search>
+			<add position="before"><![CDATA[
+		if ($this->config->get('rees46_status')) {
+			$data['rees46_status'] = $this->language->get('rees46_status');
+			$data['rees46_secret_key'] = $this->language->get('rees46_secret_key');
+		} else {
+			$data['rees46_status'] = false;
+		}
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/common/footer.tpl">
+		<operation>
+			<search><![CDATA[
+</body></html>
+			]]></search>
+			<add position="before"><![CDATA[
+<?php if ($rees46_status) { ?>
+<!-- REES46 Init Begin -->
+<script>
+(function(r){window.r46=window.r46||function(){(r46.q=r46.q||[]).push(arguments)};var s=document.getElementsByTagName(r)[0],rs=document.createElement(r);rs.async=1;rs.src='//cdn.rees46.com/v3.js';s.parentNode.insertBefore(rs,s);})('script');
+// Init everything
+r46('init', <?php echo $rees46_secret_key; ?>);
+</script>
+<!-- REES46 Init End -->
+<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+</modification>

@@ -14,6 +14,8 @@ $_['text_edit']               = 'Настройки модуля';
 $_['text_documentation']      = 'Документация';
 
 // Entry
+$_['entry_shop_id']           = 'Shop id';
+$_['entry_secret_key']        = 'Secret key';
 $_['entry_status']            = 'Статус';
 
 // Error

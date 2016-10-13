@@ -14,6 +14,8 @@ $_['text_edit']               = 'Edit Module';
 $_['text_documentation']      = 'Documentation';
 
 // Entry
+$_['entry_shop_id']           = 'Shop id';
+$_['entry_secret_key']        = 'Secret key';
 $_['entry_status']            = 'Status';
 
 // Error
