@@ -125,6 +125,20 @@
 													<input type="text" name="module[<?php echo $module['module_id']; ?>][height]" value="<?php echo $module['setting']['height']; ?>" id="input-height<?php echo $module['module_id']; ?>" class="form-control" />
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-status<?php echo $module['module_id']; ?>"><?php echo $entry_status; ?></label>
+												<div class="col-sm-10">
+													<div class="btn-group" data-toggle="buttons" id="input-status<?php echo $module['module_id']; ?>">
+														<?php if ($module['setting']['status'] == 1) { ?>
+														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+														<?php } else { ?>
+														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+														<?php } ?>
+													</div>
+												</div>
+											</div>
 										</div>
 										<?php } ?>
 									</div>
@@ -143,7 +157,6 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript"><!--
 <?php if (isset($module_id)) { ?>
 $('.nav-tabs li:nth-child(2) a').trigger('click');
