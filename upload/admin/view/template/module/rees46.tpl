@@ -35,13 +35,13 @@
 						<div class="tab-pane active" id="tab-settings">
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="input-shop_id"><?php echo $entry_shop_id; ?></label>
-								<div class="col-sm-2">
+								<div class="col-sm-10">
 									<input type="text" name="setting[rees46_shop_id]" value="<?php echo $rees46_shop_id; ?>" id="input-shop_id" class="form-control" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="input-secret_key"><?php echo $entry_secret_key; ?></label>
-								<div class="col-sm-2">
+								<div class="col-sm-10">
 									<input type="text" name="setting[rees46_secret_key]" value="<?php echo $rees46_secret_key; ?>" id="input-secret_key" class="form-control" />
 								</div>
 							</div>
