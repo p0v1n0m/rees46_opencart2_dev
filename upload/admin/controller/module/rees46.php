@@ -9,6 +9,7 @@ class ControllerModuleRees46 extends Controller {
 
 		$this->load->model('setting/setting');
 		$this->load->model('extension/module');
+		$this->load->model('localisation/language');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			if (!empty($this->request->post['module'])) {
@@ -45,13 +46,28 @@ class ControllerModuleRees46 extends Controller {
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 		$data['button_add'] = $this->language->get('button_add');
-		$data['text_edit'] = $this->language->get('text_edit');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
+		$data['text_edit'] = $this->language->get('text_edit');
+		$data['text_tab_module'] = $this->language->get('text_tab_module');
 		$data['text_documentation'] = $this->language->get('text_documentation');
+		$data['text_type_interesting'] = $this->language->get('text_type_interesting');
+		$data['text_type_also_bought'] = $this->language->get('text_type_also_bought');
+		$data['text_type_similar'] = $this->language->get('text_type_similar');
+		$data['text_type_popular'] = $this->language->get('text_type_popular');
+		$data['text_type_see_also'] = $this->language->get('text_type_see_also');
+		$data['text_type_recently_viewed'] = $this->language->get('text_type_recently_viewed');
+		$data['text_type_buying_now'] = $this->language->get('text_type_buying_now');
+		$data['text_type_search'] = $this->language->get('text_type_search');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_name'] = $this->language->get('entry_name');
+		$data['entry_title'] = $this->language->get('entry_title');
+		$data['entry_type'] = $this->language->get('entry_type');
+		$data['entry_limit'] = $this->language->get('entry_limit');
+		$data['entry_width'] = $this->language->get('entry_width');
+		$data['entry_height'] = $this->language->get('entry_height');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -140,6 +156,7 @@ class ControllerModuleRees46 extends Controller {
 		}
 
 		$data['token'] = $this->session->data['token'];
+		$data['languages'] = $this->model_localisation_language->getLanguages();
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

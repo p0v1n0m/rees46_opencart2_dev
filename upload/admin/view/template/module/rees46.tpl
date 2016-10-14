@@ -61,7 +61,75 @@
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-modules">
-
+							<div class="row">
+								<div class="col-md-2">
+									<ul class="nav nav-pills nav-stacked">
+										<?php foreach ($modules as $module) { ?>
+										<li id="module-<?php echo $module['module_id']; ?>" class="module"><a href="#tab-module-<?php echo $module['module_id']; ?>" data-toggle="tab"><?php echo $module['setting']['name']; ?><span style="display: block; float: right;"><i class="fa fa-remove" onclick="$('#module-<?php echo $module['module_id']; ?>').remove(); $('#tab-module-<?php echo $module['module_id']; ?>').remove(); $('form').append('<input type=\'hidden\' name=\'delete[]\' value=\'<?php echo $module['module_id']; ?>\' />'); $('.nav-stacked .module:first-child a').trigger('click'); return false;"></i></span></a></li>
+										<?php } ?>
+										<li class="add"><a id="module-add" onclick="addModule();" style="cursor: pointer;"><?php echo $button_add; ?><span style="display: block; float: right;"><i class="fa fa-plus"></i></span></a></li>
+									</ul>
+								</div>
+								<div class="col-md-10">
+									<div class="tab-content">
+										<?php foreach ($modules as $module) { ?>
+										<div class="tab-pane" id="tab-module-<?php echo $module['module_id']; ?>">
+											<input type="hidden" name="module[<?php echo $module['module_id']; ?>][module_id]" value="<?php echo $module['module_id']; ?>" />
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-name<?php echo $module['module_id']; ?>"><?php echo $entry_name; ?></label>
+												<div class="col-sm-10">
+													<input type="text" name="module[<?php echo $module['module_id']; ?>][name]" value="<?php echo $module['setting']['name']; ?>" id="input-name<?php echo $module['module_id']; ?>" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-type<?php echo $module['module_id']; ?>"><?php echo $entry_type; ?></label>
+												<div class="col-sm-10">
+													<select name="module[<?php echo $module['module_id']; ?>][type]" id="input-type<?php echo $module['module_id']; ?>" class="form-control">
+														<option value="interesting" <?php if ($module['setting']['type'] == 'interesting') { ?>selected="selected"<?php } ?>><?php echo $text_type_interesting; ?></option>
+														<option value="also_bought" <?php if ($module['setting']['type'] == 'also_bought') { ?>selected="selected"<?php } ?>><?php echo $text_type_also_bought; ?></option>
+														<option value="similar" <?php if ($module['setting']['type'] == 'similar') { ?>selected="selected"<?php } ?>><?php echo $text_type_similar; ?></option>
+														<option value="popular" <?php if ($module['setting']['type'] == 'popular') { ?>selected="selected"<?php } ?>><?php echo $text_type_popular; ?></option>
+														<option value="see_also" <?php if ($module['setting']['type'] == 'see_also') { ?>selected="selected"<?php } ?>><?php echo $text_type_see_also; ?></option>
+														<option value="recently_viewed" <?php if ($module['setting']['type'] == 'recently_viewed') { ?>selected="selected"<?php } ?>><?php echo $text_type_recently_viewed; ?></option>
+														<option value="buying_now" <?php if ($module['setting']['type'] == 'buying_now') { ?>selected="selected"<?php } ?>><?php echo $text_type_buying_now; ?></option>
+														<option value="search" <?php if ($module['setting']['type'] == 'search') { ?>selected="selected"<?php } ?>><?php echo $text_type_search; ?></option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-title<?php echo $module['module_id']; ?>"><?php echo $entry_title; ?></label>
+												<div class="col-sm-10">
+													<?php foreach ($languages as $language) { ?>
+													<div class="input-group pull-left">
+													<span class="input-group-addon"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>
+													<input type="text" name="module[<?php echo $module['module_id']; ?>][title][<?php echo $language['language_id']; ?>]" value="<?php echo $module['setting']['title'][$language['language_id']]; ?>" id="input-title<?php echo $module['module_id']; ?>" class="form-control" />
+													</div>
+													<?php } ?>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-limit<?php echo $module['module_id']; ?>"><?php echo $entry_limit; ?></label>
+												<div class="col-sm-10">
+													<input type="text" name="module[<?php echo $module['module_id']; ?>][limit]" value="<?php echo $module['setting']['limit']; ?>" id="input-limit<?php echo $module['module_id']; ?>" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-width<?php echo $module['module_id']; ?>"><?php echo $entry_width; ?></label>
+												<div class="col-sm-10">
+													<input type="text" name="module[<?php echo $module['module_id']; ?>][width]" value="<?php echo $module['setting']['width']; ?>" id="input-width<?php echo $module['module_id']; ?>" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-height<?php echo $module['module_id']; ?>"><?php echo $entry_height; ?></label>
+												<div class="col-sm-10">
+													<input type="text" name="module[<?php echo $module['module_id']; ?>][height]" value="<?php echo $module['setting']['height']; ?>" id="input-height<?php echo $module['module_id']; ?>" class="form-control" />
+												</div>
+											</div>
+										</div>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane" id="tab-help">
 							<div class="form-group">
@@ -75,4 +143,87 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript"><!--
+<?php if (isset($module_id)) { ?>
+$('.nav-tabs li:nth-child(2) a').trigger('click');
+$('#module-<?php echo $module_id; ?> a').trigger('click');
+<?php } else { ?>
+$('.nav-stacked .module:first-child a').trigger('click');
+<?php } ?>
+
+var module_row = <?php echo $module_row; ?>;
+
+function addModule() {
+	html  = '<div class="tab-pane" id="tab-module-' + module_row + '">';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-name' + module_row + '"><?php echo $entry_name; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" name="module[' + module_row + '][name]" value="<?php echo $text_tab_module; ?> ' + module_row + '" id="input-name' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-type' + module_row + '"><?php echo $entry_type; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<select name="module[' + module_row + '][type]" id="input-type' + module_row + '" class="form-control">';
+	html += '				<option value="interesting"><?php echo $text_type_interesting; ?></option>';
+	html += '				<option value="also_bought"><?php echo $text_type_also_bought; ?></option>';
+	html += '				<option value="similar"><?php echo $text_type_similar; ?></option>';
+	html += '				<option value="popular"><?php echo $text_type_popular; ?></option>';
+	html += '				<option value="see_also"><?php echo $text_type_see_also; ?></option>';
+	html += '				<option value="recently_viewed"><?php echo $text_type_recently_viewed; ?></option>';
+	html += '				<option value="buying_now"><?php echo $text_type_buying_now; ?></option>';
+	html += '				<option value="search"><?php echo $text_type_search; ?></option>';
+	html += '			</select>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-title' + module_row + '"><?php echo $entry_title; ?></label>';
+	html += '		<div class="col-sm-10">';
+	<?php foreach ($languages as $language) { ?>
+	html += '			<div class="input-group pull-left">';
+	html += '				<span class="input-group-addon"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>';
+	html += '				<input type="text" name="module[' + module_row + '][title][<?php echo $language['language_id']; ?>]" value="" id="input-title' + module_row + '" class="form-control" />';
+	html += '			</div>';
+	<?php } ?>
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-limit' + module_row + '"><?php echo $entry_limit; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" name="module[' + module_row + '][limit]" value="" id="input-limit' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-width' + module_row + '"><?php echo $entry_width; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" name="module[' + module_row + '][width]" value="" id="input-width' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-height' + module_row + '"><?php echo $entry_height; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" name="module[' + module_row + '][height]" value="" id="input-height' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-status' + module_row + '"><?php echo $entry_status; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<div class="btn-group" data-toggle="buttons" id="input-status' + module_row + '">';
+	html += '				<label class="btn btn-info active"><input type="radio" name="module[' + module_row + '][status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>';
+	html += '				<label class="btn btn-info"><input type="radio" name="module[' + module_row + '][status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>';
+	html += '			</div>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	$('.row .tab-content').append(html);
+
+	$('.nav-stacked .add').before('<li id="module-' + module_row + '" class="module"><a href="#tab-module-' + module_row + '" data-toggle="tab"><?php echo $text_tab_module; ?> ' + module_row + '<span style="display: block; float: right;"><i class="fa fa-remove" onclick="$(\'#module-' + module_row + '\').remove(); $(\'#tab-module-' + module_row + '\').remove(); $(\'.nav-stacked .module:first-child a\').trigger(\'click\'); return false;"></i></span></a></li>');
+
+	$('#module-' + module_row + ' a').trigger('click');
+
+	module_row++;
+}
+//--></script>
 <?php echo $footer; ?>
