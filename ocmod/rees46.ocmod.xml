@@ -23,8 +23,10 @@ $status = true;
 				}
 
 				if ($this->customer->isLogged()) {
-					$data['rees46_customer_id'] = $this->customer->getId();;
-					$data['rees46_customer_email'] = $this->customer->getEmail();;
+					$data['rees46_customer_id'] = $this->customer->getId();
+					$data['rees46_customer_email'] = $this->customer->getEmail();
+				} elseif (isset($this->session->data['guest']['email'])) {
+					$data['rees46_guest_email'] = $this->session->data['guest']['email'];
 				}
 			} else {
 				$data['rees46_route'] = 'common/home';
@@ -50,6 +52,11 @@ r46('init', '<?php echo $rees46_shop_id; ?>');
 <?php if (isset($rees46_customer_id)) { ?>
 // Add customer info
 r46('profile', 'set', {id: <?php echo $rees46_customer_id; ?>, email: '<?php echo $rees46_customer_email; ?>', birthday: '', gender: '' });
+<?php } ?>
+
+<?php if (isset($rees46_guest_email)) { ?>
+// Add guest info
+r46('profile', 'set', {email: '<?php echo $rees46_guest_email; ?>'});
 <?php } ?>
 
 <?php if (isset($rees46_product_id)) { ?>
