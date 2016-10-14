@@ -49,12 +49,12 @@
 								<label class="col-sm-2 control-label"><?php echo $entry_status; ?></label>
 								<div class="col-sm-10">
 									<div class="btn-group" data-toggle="buttons">
-										<?php if ($rees46_status) { ?>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+										<?php if ($rees46_tracking_status) { ?>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_tracking_status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_tracking_status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
 										<?php } else { ?>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_tracking_status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_tracking_status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
 										<?php } ?>
 									</div>
 								</div>

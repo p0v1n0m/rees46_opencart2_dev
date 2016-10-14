@@ -119,10 +119,10 @@ class ControllerModuleRees46 extends Controller {
 			$data['rees46_secret_key'] = $this->config->get('rees46_secret_key');
 		}
 
-		if (isset($this->request->post['rees46_status'])) {
-			$data['rees46_status'] = $this->request->post['rees46_status'];
+		if (isset($this->request->post['rees46_tracking_status'])) {
+			$data['rees46_tracking_status'] = $this->request->post['rees46_tracking_status'];
 		} else {
-			$data['rees46_status'] = $this->config->get('rees46_status');
+			$data['rees46_tracking_status'] = $this->config->get('rees46_tracking_status');
 		}
 
 		if (isset($this->request->get['module_id'])) {

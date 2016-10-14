@@ -11,8 +11,8 @@
 $status = true;
 			]]></search>
 			<add position="before"><![CDATA[
-		if ($this->config->get('rees46_status')) {
-			$data['rees46_status'] = $this->config->get('rees46_status');
+		if ($this->config->get('rees46_tracking_status')) {
+			$data['rees46_status'] = $this->config->get('rees46_tracking_status');
 			$data['rees46_shop_id'] = $this->config->get('rees46_shop_id');
 
 			if (isset($this->request->get['route'])) {
@@ -97,8 +97,8 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 $this->cart->clear();
 			]]></search>
 			<add position="before"><![CDATA[
-			if ($this->config->get('rees46_status')) {
-				$data['rees46_status'] = $this->config->get('rees46_status');
+			if ($this->config->get('rees46_tracking_status')) {
+				$data['rees46_status'] = $this->config->get('rees46_tracking_status');
 
 				$this->load->model('account/order');
 
