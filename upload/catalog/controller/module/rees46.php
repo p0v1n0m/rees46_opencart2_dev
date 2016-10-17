@@ -217,7 +217,15 @@ class ControllerModuleRees46 extends Controller {
 							'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'] . '&recommended_by=' . $setting['type'])
 						);
 					} else {
-						// http://docs.rees46.com/pages/viewpage.action?pageId=2424903
+						$url = 'http://api.rees46.com/import/disable';
+
+						$params['shop_id'] = $this->config->get('rees46_shop_id');
+						$params['shop_secret'] = $this->config->get('rees46_secret_key');
+						$params['item_ids'] = $product_id;
+
+						$this->curl($url, json_encode($params, true));
+
+						// log: product_id exclude of recomended
 					}
 				}
 			}
@@ -230,5 +238,23 @@ class ControllerModuleRees46 extends Controller {
 				}
 			}
 		}
+	}
+
+	protected function curl($url, $params) {
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+		$data['result'] = curl_exec($ch);
+		$data['info'] = curl_getinfo($ch);
+
+		curl_close($ch);
+
+		return $data;
 	}
 }
