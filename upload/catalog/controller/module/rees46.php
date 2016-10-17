@@ -115,7 +115,11 @@ class ControllerModuleRees46 extends Controller {
 
 			$setting = $this->model_extension_module->getModule($this->request->get['module_id']);
 
-			$data['heading_title'] = html_entity_decode($setting['title'][$this->config->get('config_language_id')], ENT_QUOTES, 'UTF-8');
+			if ($setting['title'][$this->config->get('config_language_id')] != '') {
+				$data['heading_title'] = html_entity_decode($setting['title'][$this->config->get('config_language_id')], ENT_QUOTES, 'UTF-8');
+			} else {
+				$data['heading_title'] = $this->language->get('text_type_' . $setting['type']);
+			}
 
 			if ($setting['width']) {
 				$width = $setting['width'];
