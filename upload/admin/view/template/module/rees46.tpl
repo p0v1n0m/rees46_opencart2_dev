@@ -130,7 +130,7 @@
 												<div class="col-sm-10">
 													<select name="module[<?php echo $module['module_id']; ?>][template]" id="input-template<?php echo $module['module_id']; ?>" class="form-control">
 														<option value="rees46_default" <?php if ($module['setting']['template'] == 'rees46_default') { ?>selected="selected"<?php } ?>><?php echo $text_template_default; ?></option>
-														<option value="rees46_asic" <?php if ($module['setting']['template'] == 'rees46_basic') { ?>selected="selected"<?php } ?>><?php echo $text_template_basic; ?></option>
+														<option value="rees46_basic" <?php if ($module['setting']['template'] == 'rees46_basic') { ?>selected="selected"<?php } ?>><?php echo $text_template_basic; ?></option>
 														<option value="bestseller" <?php if ($module['setting']['template'] == 'bestseller') { ?>selected="selected"<?php } ?>><?php echo $text_template_bestseller; ?></option>
 														<option value="featured" <?php if ($module['setting']['template'] == 'featured') { ?>selected="selected"<?php } ?>><?php echo $text_template_featured; ?></option>
 														<option value="latest" <?php if ($module['setting']['template'] == 'latest') { ?>selected="selected"<?php } ?>><?php echo $text_template_latest; ?></option>
