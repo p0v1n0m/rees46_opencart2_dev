@@ -10,6 +10,7 @@ class ControllerModuleRees46 extends Controller {
 		$this->load->model('setting/setting');
 		$this->load->model('extension/module');
 		$this->load->model('localisation/language');
+		$this->load->model('catalog/manufacturer');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			if (!empty($this->request->post['module'])) {
@@ -65,6 +66,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_template_featured'] = $this->language->get('text_template_featured');
 		$data['text_template_latest'] = $this->language->get('text_template_latest');
 		$data['text_template_special'] = $this->language->get('text_template_special');
+		$data['text_autocomplete'] = $this->language->get('text_autocomplete');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -77,6 +79,8 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_template'] = $this->language->get('entry_template');
 		$data['entry_css'] = $this->language->get('entry_css');
 		$data['entry_discount'] = $this->language->get('entry_discount');
+		$data['entry_brands'] = $this->language->get('entry_brands');
+		$data['entry_exclude_brands'] = $this->language->get('entry_exclude_brands');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -146,10 +150,42 @@ class ControllerModuleRees46 extends Controller {
 			foreach ($modules as $module) {
 				$setting = json_decode($module['setting'], true);
 
+				$manufacturers = array();
+
+				if (!empty($setting['manufacturers'])) {
+					foreach ($setting['manufacturers'] as $manufacturer_id) {
+						$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($manufacturer_id);
+
+						if ($manufacturer_info) {
+							$manufacturers[] = array(
+								'manufacturer_id' => $manufacturer_info['manufacturer_id'],
+								'name'            => $manufacturer_info['name']
+							);
+						}
+					}
+				}
+
+				$manufacturers_exclude = array();
+
+				if (!empty($setting['manufacturers_exclude'])) {
+					foreach ($setting['manufacturers_exclude'] as $manufacturer_id) {
+						$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($manufacturer_id);
+
+						if ($manufacturer_info) {
+							$manufacturers_exclude[] = array(
+								'manufacturer_id' => $manufacturer_info['manufacturer_id'],
+								'name'            => $manufacturer_info['name']
+							);
+						}
+					}
+				}
+
 				$data['modules'][] = array(
-					'module_id' => $module['module_id'],
-					'name'      => $module['name'],
-					'setting'   => $setting
+					'module_id'             => $module['module_id'],
+					'name'                  => $module['name'],
+					'setting'               => $setting,
+					'manufacturers'         => $manufacturers,
+					'manufacturers_exclude' => $manufacturers_exclude
 				);
 
 				$setting = '';

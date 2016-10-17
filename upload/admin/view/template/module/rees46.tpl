@@ -166,6 +166,36 @@
 													</div>
 												</div>
 											</div>
+											<div class="form-group" id="autocomplete<?php echo $module['module_id']; ?>">
+												<label class="col-sm-2 control-label"><?php echo $entry_brands; ?></label>
+												<div class="col-sm-10">
+													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />
+													<div class="well well-sm" style="height: 150px; overflow: auto;">
+														<?php if (isset($module['manufacturers'])) { ?>
+														<?php foreach ($module['manufacturers'] as $manufacturer) { ?>
+														<div class="module-autocomplete<?php echo $manufacturer['manufacturer_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $manufacturer['name']; ?>
+															<input type="hidden" name="module[<?php echo $module['module_id']; ?>][manufacturers][]" value="<?php echo $manufacturer['manufacturer_id']; ?>" />
+														</div>
+														<?php } ?>
+														<?php } ?>
+													</div>
+												</div>
+											</div>
+											<div class="form-group" id="autocomplete-exclude<?php echo $module['module_id']; ?>">
+												<label class="col-sm-2 control-label"><?php echo $entry_exclude_brands; ?></label>
+												<div class="col-sm-10">
+													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />
+													<div class="well well-sm" style="height: 150px; overflow: auto;">
+														<?php if (isset($module['manufacturers_exclude'])) { ?>
+														<?php foreach ($module['manufacturers_exclude'] as $manufacturer) { ?>
+														<div class="module-autocomplete<?php echo $manufacturer['manufacturer_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $manufacturer['name']; ?>
+															<input type="hidden" name="module[<?php echo $module['module_id']; ?>][manufacturers_exclude][]" value="<?php echo $manufacturer['manufacturer_id']; ?>" />
+														</div>
+														<?php } ?>
+														<?php } ?>
+													</div>
+												</div>
+											</div>
 											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-status<?php echo $module['module_id']; ?>"><?php echo $entry_status; ?></label>
 												<div class="col-sm-10">
@@ -205,6 +235,36 @@ $('#module-<?php echo $module_id; ?> a').trigger('click');
 <?php } else { ?>
 $('.nav-stacked .module:first-child a').trigger('click');
 <?php } ?>
+
+$('.autocomplete').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['manufacturer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		var id = $(this).parent().parent('.form-group').attr('id');
+
+		$('#' + id + ' .autocomplete').val('');
+
+		$('#' + id + ' .module-autocomplete' + item['value']).remove();
+
+		$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('.well').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
 
 var module_row = <?php echo $module_row; ?>;
 
@@ -291,6 +351,20 @@ function addModule() {
 	html += '			</div>';
 	html += '		</div>';
 	html += '	</div>';
+	html += '	<div class="form-group" id="autocomplete' + module_row + '">';
+	html += '		<label class="col-sm-2 control-label" for="input-manufacturers' + module_row + '"><?php echo $entry_brands; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />';
+	html += '			<div class="well well-sm" style="height: 150px; overflow: auto;"></div>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group" id="autocomplete-exclude' + module_row + '">';
+	html += '		<label class="col-sm-2 control-label" for="input-manufacturers-exclude' + module_row + '"><?php echo $entry_exclude_brands; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />';
+	html += '			<div class="well well-sm" style="height: 150px; overflow: auto;"></div>';
+	html += '		</div>';
+	html += '	</div>';
 	html += '	<div class="form-group">';
 	html += '		<label class="col-sm-2 control-label" for="input-status' + module_row + '"><?php echo $entry_status; ?></label>';
 	html += '		<div class="col-sm-10">';
@@ -309,6 +383,36 @@ function addModule() {
 	$('#module-' + module_row + ' a').trigger('click');
 
 	module_row++;
+
+	$('.autocomplete').autocomplete({
+		'source': function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/manufacturer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['manufacturer_id']
+						}
+					}));
+				}
+			});
+		},
+		'select': function(item) {
+			var id = $(this).parent().parent('.form-group').attr('id');
+
+			$('#' + id + ' .autocomplete').val('');
+
+			$('#' + id + ' .module-autocomplete' + item['value']).remove();
+
+			$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('.well').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
 }
 //--></script>
 <?php echo $footer; ?>

@@ -27,6 +27,7 @@ $_['text_template_bestseller']  = 'Хиты продаж';
 $_['text_template_featured']    = 'Рекомендуемые';
 $_['text_template_latest']      = 'Последние';
 $_['text_template_special']     = 'Акции';
+$_['text_autocomplete']         = 'Автодополнение';
 
 // Entry
 $_['entry_shop_id']             = 'Shop id';
@@ -41,6 +42,8 @@ $_['entry_height']              = 'Высота изображения';
 $_['entry_template']            = 'Шаблон';
 $_['entry_css']                 = 'Загружать CSS-стили из кабинета REES46';
 $_['entry_discount']            = 'Только акционные товары';
+$_['entry_brands']              = 'Товары только этих брендов';
+$_['entry_exclude_brands']      = 'Исключить товары этих брендов';
 
 // Error
 $_['error_permission']          = 'У вас нет прав для изменения модуля REES46!';

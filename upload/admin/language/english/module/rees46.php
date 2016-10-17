@@ -27,6 +27,7 @@ $_['text_template_bestseller']  = 'Bestseller';
 $_['text_template_featured']    = 'Featured';
 $_['text_template_latest']      = 'Latest';
 $_['text_template_special']     = 'Special';
+$_['text_autocomplete']         = 'Autocomplete';
 
 // Entry
 $_['entry_shop_id']             = 'Shop id';
@@ -41,6 +42,8 @@ $_['entry_height']              = 'Image Height';
 $_['entry_template']            = 'Template';
 $_['entry_css']                 = 'Loading CSS-styles of REES46';
 $_['entry_discount']            = 'Only special products';
+$_['entry_brands']              = 'Only products of brands';
+$_['entry_exclude_brands']      = 'Exclude products of brands';
 
 // Error
 $_['error_permission']          = 'Warning: You do not have permission to modify REES46 module!';

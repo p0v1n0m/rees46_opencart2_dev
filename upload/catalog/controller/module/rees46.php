@@ -40,6 +40,30 @@ class ControllerModuleRees46 extends Controller {
 
 		$params['discount'] = (int)$setting['discount'];
 
+		if (!empty($setting['manufacturers']) || !empty($setting['manufacturers_exclude'])) {
+			$this->load->model('catalog/manufacturer');
+		}
+
+		if (!empty($setting['manufacturers'])) {
+			$params['brands'] = array();
+
+			foreach ($setting['manufacturers'] as $manufacturer) {
+				$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($manufacturer);
+
+				$params['brands'][] = $manufacturer_info['name'];
+			}
+		}
+
+		if (!empty($setting['manufacturers_exclude'])) {
+			$params['exclude_brands'] = array();
+
+			foreach ($setting['manufacturers_exclude'] as $manufacturer) {
+				$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($manufacturer);
+
+				$params['exclude_brands'][] = $manufacturer_info['name'];
+			}
+		}
+
 		if ($data['type'] == 'interesting') {
 			if (isset($item)) {
 				$params['item'] = $item;
