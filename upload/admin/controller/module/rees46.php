@@ -76,6 +76,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_height'] = $this->language->get('entry_height');
 		$data['entry_template'] = $this->language->get('entry_template');
 		$data['entry_css'] = $this->language->get('entry_css');
+		$data['entry_discount'] = $this->language->get('entry_discount');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];

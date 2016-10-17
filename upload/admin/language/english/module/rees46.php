@@ -40,6 +40,7 @@ $_['entry_width']               = 'Image Width';
 $_['entry_height']              = 'Image Height';
 $_['entry_template']            = 'Template';
 $_['entry_css']                 = 'Loading CSS-styles of REES46';
+$_['entry_discount']            = 'Only special products';
 
 // Error
 $_['error_permission']          = 'Warning: You do not have permission to modify REES46 module!';

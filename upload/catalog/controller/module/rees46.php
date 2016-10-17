@@ -35,8 +35,10 @@ class ControllerModuleRees46 extends Controller {
 		if ($setting['limit'] > 0) {
 			$params['limit'] = 6;
 		} else {
-			$params['limit'] = $setting['limit'];
+			$params['limit'] = (int)$setting['limit'];
 		}
+
+		$params['discount'] = (int)$setting['discount'];
 
 		if ($data['type'] == 'interesting') {
 			if (isset($item)) {
