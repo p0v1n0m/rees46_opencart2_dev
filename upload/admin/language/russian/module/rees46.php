@@ -39,6 +39,7 @@ $_['text_template_special']       = 'Акции';
 $_['text_autocomplete']           = 'Автодополнение';
 $_['text_subscribers']            = 'Подписчики на новости';
 $_['text_customers']              = 'Все покупатели';
+$_['text_export_info']            = 'Пожалуйста, сохраните настройки перед экспортом!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop id';

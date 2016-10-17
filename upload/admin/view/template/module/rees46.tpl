@@ -81,7 +81,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-sm-10 col-sm-offset-2">
+								<div class="col-sm-2">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_export_info; ?></div>
+								</div>
+								<div class="col-sm-10">
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><i class="fa fa-play"></i> <?php echo $button_start; ?></button>
 								</div>
 							</div>
@@ -503,7 +506,7 @@ function startExport(type, next = 1) {
 			$('#button-start-' + type).button('loading');
 		},
 		success: function(json) {
-			$('.alert').remove();
+			$('.alert-danger, .alert-success').remove();
 
 			if (json['success']) {
 				$('#tab-' + type).prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');

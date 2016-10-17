@@ -73,6 +73,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_autocomplete'] = $this->language->get('text_autocomplete');
 		$data['text_subscribers'] = $this->language->get('text_subscribers');
 		$data['text_customers'] = $this->language->get('text_customers');
+		$data['text_export_info'] = $this->language->get('text_export_info');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');

@@ -39,6 +39,7 @@ $_['text_template_special']       = 'Special';
 $_['text_autocomplete']           = 'Autocomplete';
 $_['text_subscribers']            = 'Newsletter Subscribers';
 $_['text_customers']              = 'All Customers';
+$_['text_export_info']            = 'Please save settings before export!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop id';
