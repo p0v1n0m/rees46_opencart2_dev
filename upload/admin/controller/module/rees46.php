@@ -42,11 +42,14 @@ class ControllerModuleRees46 extends Controller {
 
 		$data['heading_title'] = $this->language->get('heading_title');
 		$data['tab_settings'] = $this->language->get('tab_settings');
+		$data['tab_orders'] = $this->language->get('tab_orders');
+		$data['tab_subscribers'] = $this->language->get('tab_subscribers');
 		$data['tab_modules'] = $this->language->get('tab_modules');
 		$data['tab_help'] = $this->language->get('tab_help');
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 		$data['button_add'] = $this->language->get('button_add');
+		$data['button_start'] = $this->language->get('button_start');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['text_edit'] = $this->language->get('text_edit');
@@ -67,9 +70,12 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_template_latest'] = $this->language->get('text_template_latest');
 		$data['text_template_special'] = $this->language->get('text_template_special');
 		$data['text_autocomplete'] = $this->language->get('text_autocomplete');
+		$data['text_subscribers'] = $this->language->get('text_subscribers');
+		$data['text_customers'] = $this->language->get('text_customers');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_export'] = $this->language->get('entry_export');
 		$data['entry_name'] = $this->language->get('entry_name');
 		$data['entry_title'] = $this->language->get('entry_title');
 		$data['entry_type'] = $this->language->get('entry_type');
@@ -136,6 +142,12 @@ class ControllerModuleRees46 extends Controller {
 			$data['rees46_tracking_status'] = $this->request->post['rees46_tracking_status'];
 		} else {
 			$data['rees46_tracking_status'] = $this->config->get('rees46_tracking_status');
+		}
+
+		if (isset($this->request->post['rees46_subscribers'])) {
+			$data['rees46_subscribers'] = $this->request->post['rees46_subscribers'];
+		} else {
+			$data['rees46_subscribers'] = $this->config->get('rees46_subscribers');
 		}
 
 		if (isset($this->request->get['module_id'])) {
@@ -208,6 +220,92 @@ class ControllerModuleRees46 extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('module/rees46.tpl', $data));
+	}
+
+	public function exportSubscribers() {
+		$this->load->language('module/rees46');
+
+		$this->load->model('customer/customer');
+
+		$json = array();
+
+		if ($this->validate()) {
+			$next = $this->request->post['next'];
+			$limit = 1;
+
+			$customer_data = array(
+				'start' => ($next - 1) * $limit,
+				'limit' => $limit
+			);
+
+			if ($customer_data['start'] < 0) {
+				$customer_data['start'] = 0;
+			}
+
+			if (!$this->config->get('rees46_subscribers')) {
+				$customer_data['filter_newsletter'] = 1;
+			}
+
+			$email_total = $this->model_customer_customer->getTotalCustomers($customer_data);
+
+			$results = $this->model_customer_customer->getCustomers($customer_data);
+
+			$emails = array();
+
+			foreach ($results as $result) {
+				$emails[] = array(
+					'id'    => $result['customer_id'],
+					'email' => $result['email']
+				);
+			}
+
+			if (!empty($emails)) {
+				$url = 'http://api.rees46.com/import/audience';
+
+				$params['shop_id'] = $this->config->get('rees46_shop_id');
+				$params['shop_secret'] = $this->config->get('rees46_secret_key');
+				$params['audience'] = $emails;
+
+				$data = $this->curl($url, json_encode($params, true));
+
+				if ($data['info']['http_code'] < 200 || $data['info']['http_code'] >= 300) {
+					$json['error'] = $data['info']['http_code'];
+				} else {
+					if ($email_total > $next * $limit) {
+						$json['next'] = $next + 1;
+
+						$json['success'] = sprintf($this->language->get('text_processing_subscribers'), $next * $limit ? $email_total : 0, $email_total);
+					} else {
+						$json['success'] = sprintf($this->language->get('text_success_subscribers'), $email_total, $email_total);
+					}
+				}
+			} else {
+				$json['error'] = $this->language->get('text_error_subscribers');
+			}
+		} else {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	protected function curl($url, $params) {
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+		$data['result'] = curl_exec($ch);
+		$data['info'] = curl_getinfo($ch);
+
+		curl_close($ch);
+
+		return $data;
 	}
 
 	protected function validate() {

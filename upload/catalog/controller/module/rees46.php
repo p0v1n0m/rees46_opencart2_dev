@@ -216,6 +216,8 @@ class ControllerModuleRees46 extends Controller {
 							'rating'      => $rating,
 							'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'] . '&recommended_by=' . $setting['type'])
 						);
+					} else {
+						// http://docs.rees46.com/pages/viewpage.action?pageId=2424903
 					}
 				}
 			}

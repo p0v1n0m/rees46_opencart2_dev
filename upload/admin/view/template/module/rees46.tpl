@@ -28,6 +28,8 @@
 				<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#tab-settings" data-toggle="tab"><?php echo $tab_settings; ?></a></li>
+						<li><a href="#tab-orders" data-toggle="tab"><?php echo $tab_orders; ?></a></li>
+						<li><a href="#tab-subscribers" data-toggle="tab"><?php echo $tab_subscribers; ?></a></li>
 						<li><a href="#tab-modules" data-toggle="tab"><?php echo $tab_modules; ?></a></li>
 						<li><a href="#tab-help" data-toggle="tab"><?php echo $tab_help; ?></a></li>
 					</ul>
@@ -57,6 +59,35 @@
 										<label class="btn btn-info"><input type="radio" name="setting[rees46_tracking_status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
 										<?php } ?>
 									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-orders">
+
+						</div>
+						<div class="tab-pane" id="tab-subscribers">
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_export; ?></label>
+								<div class="col-sm-10">
+									<div class="btn-group" data-toggle="buttons">
+										<?php if ($rees46_subscribers) { ?>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_subscribers]" value="0" autocomplete="off"><?php echo $text_subscribers; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_subscribers]" value="1" autocomplete="off" checked="checked"><?php echo $text_customers; ?></label>
+										<?php } else { ?>
+										<label class="btn btn-info active"><input type="radio" name="setting[rees46_subscribers]" value="0" autocomplete="off" checked="checked"><?php echo $text_subscribers; ?></label>
+										<label class="btn btn-info"><input type="radio" name="setting[rees46_subscribers]" value="1" autocomplete="off"><?php echo $text_customers; ?></label>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<!--div class="form-group">
+								<div class="col-sm-10 col-sm-offset-2">
+									<div class="alert alert-info"><i class="fa fa-exclamation-circle"></i> Перед экспортом сохраните настройки!</div>
+								</div>
+							</div-->
+							<div class="form-group">
+								<div class="col-sm-10 col-sm-offset-2">
+									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><i class="fa fa-play"></i> <?php echo $button_start; ?></button>
 								</div>
 							</div>
 						</div>
@@ -230,7 +261,7 @@
 </div>
 <script type="text/javascript"><!--
 <?php if (isset($module_id)) { ?>
-$('.nav-tabs li:nth-child(2) a').trigger('click');
+$('.nav-tabs li:nth-child(4) a').trigger('click');
 $('#module-<?php echo $module_id; ?> a').trigger('click');
 <?php } else { ?>
 $('.nav-stacked .module:first-child a').trigger('click');
@@ -412,6 +443,38 @@ function addModule() {
 
 	$('.well').delegate('.fa-minus-circle', 'click', function() {
 		$(this).parent().remove();
+	});
+}
+
+function startExport(type, next = 1) {
+	$.ajax({
+		url: 'index.php?route=module/rees46/export' + type + '&token=' + getURLVar('token'),
+		type: 'post',
+		data: 'type=' + type + '&next=' + next,
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-start-' + type).button('loading');
+		},
+		success: function(json) {
+			$('.alert').remove();
+
+			if (json['success']) {
+				$('#tab-' + type).prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+
+			if (json['next']) {
+				startExport(type, json['next']);
+			} else {
+				$('#button-start-' + type).button('reset');
+			}
+
+			if (json['error']) {
+				$('#tab-' + type).prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
 	});
 }
 //--></script>
