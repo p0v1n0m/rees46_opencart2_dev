@@ -147,7 +147,7 @@ class ControllerModuleRees46 extends Controller {
 				foreach ($product_ids as $product_id) {
 					$product_info = $this->model_catalog_product->getProduct($product_id);
 
-					if ($product_info) {
+					if ($product_info && $product_info['quantity'] > 0) {
 						if ($product_info['image']) {
 							$image = $this->model_tool_image->resize($product_info['image'], $width, $height);
 						} else {
@@ -187,7 +187,7 @@ class ControllerModuleRees46 extends Controller {
 							'special'     => $special,
 							'tax'         => $tax,
 							'rating'      => $rating,
-							'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
+							'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'] . '&recommended_by=' . $setting['type'])
 						);
 					}
 				}
