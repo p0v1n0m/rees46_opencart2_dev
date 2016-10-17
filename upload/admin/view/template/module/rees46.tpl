@@ -126,6 +126,19 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-template<?php echo $module['module_id']; ?>"><?php echo $entry_template; ?></label>
+												<div class="col-sm-10">
+													<select name="module[<?php echo $module['module_id']; ?>][template]" id="input-template<?php echo $module['module_id']; ?>" class="form-control">
+														<option value="rees46_default" <?php if ($module['setting']['template'] == 'rees46_default') { ?>selected="selected"<?php } ?>><?php echo $text_template_default; ?></option>
+														<option value="rees46_asic" <?php if ($module['setting']['template'] == 'rees46_basic') { ?>selected="selected"<?php } ?>><?php echo $text_template_basic; ?></option>
+														<option value="bestseller" <?php if ($module['setting']['template'] == 'bestseller') { ?>selected="selected"<?php } ?>><?php echo $text_template_bestseller; ?></option>
+														<option value="featured" <?php if ($module['setting']['template'] == 'featured') { ?>selected="selected"<?php } ?>><?php echo $text_template_featured; ?></option>
+														<option value="latest" <?php if ($module['setting']['template'] == 'latest') { ?>selected="selected"<?php } ?>><?php echo $text_template_latest; ?></option>
+														<option value="special" <?php if ($module['setting']['template'] == 'special') { ?>selected="selected"<?php } ?>><?php echo $text_template_special; ?></option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-css<?php echo $module['module_id']; ?>"><?php echo $entry_css; ?></label>
 												<div class="col-sm-10">
 													<div class="btn-group" data-toggle="buttons" id="input-css<?php echo $module['module_id']; ?>">
@@ -231,6 +244,19 @@ function addModule() {
 	html += '		<label class="col-sm-2 control-label" for="input-height' + module_row + '"><?php echo $entry_height; ?></label>';
 	html += '		<div class="col-sm-10">';
 	html += '			<input type="text" name="module[' + module_row + '][height]" value="" id="input-height' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-template' + module_row + '"><?php echo $entry_template; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<select name="module[' + module_row + '][template]" id="input-template' + module_row + '" class="form-control">';
+	html += '				<option value="rees46_default"><?php echo $text_template_default; ?></option>';
+	html += '				<option value="rees46_basic"><?php echo $text_template_basic; ?></option>';
+	html += '				<option value="bestseller"><?php echo $text_template_bestseller; ?></option>';
+	html += '				<option value="featured"><?php echo $text_template_featured; ?></option>';
+	html += '				<option value="latest"><?php echo $text_template_latest; ?></option>';
+	html += '				<option value="special"><?php echo $text_template_special; ?></option>';
+	html += '			</select>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group">';

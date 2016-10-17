@@ -4,6 +4,12 @@ class ControllerModuleRees46 extends Controller {
 		$data['module_id'] = $setting['module_id'];
 		$data['type'] = $setting['type'];
 
+		if ($setting['css']) {
+			$data['css'] = $setting['css'];
+		} else {
+			$data['css'] = false;
+		}
+
 		if (isset($this->request->get['product_id'])) {
 			$item = (int)$this->request->get['product_id'];
 		}
@@ -109,6 +115,7 @@ class ControllerModuleRees46 extends Controller {
 			$this->load->model('tool/image');
 
 			$data['text_tax'] = $this->language->get('text_tax');
+			$data['text_more'] = $this->language->get('text_more');
 			$data['button_cart'] = $this->language->get('button_cart');
 			$data['button_wishlist'] = $this->language->get('button_wishlist');
 			$data['button_compare'] = $this->language->get('button_compare');
@@ -131,12 +138,6 @@ class ControllerModuleRees46 extends Controller {
 				$height = $setting['height'];
 			} else {
 				$height = 100;
-			}
-
-			if ($setting['css']) {
-				$data['css'] = $setting['css'];
-			} else {
-				$data['css'] = false;
 			}
 
 			$data['products'] = array();
@@ -194,10 +195,10 @@ class ControllerModuleRees46 extends Controller {
 			}
 
 			if (!empty($data['products'])) {
-				if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/rees46_products.tpl')) {
-					$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/module/rees46_products.tpl', $data));
+				if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/' . $setting['template'] . '.tpl')) {
+					$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/module/' . $setting['template'] . '.tpl', $data));
 				} else {
-					$this->response->setOutput($this->load->view('default/template/module/rees46_products.tpl', $data));
+					$this->response->setOutput($this->load->view('default/template/module/' . $setting['template'] . '.tpl', $data));
 				}
 			}
 		}

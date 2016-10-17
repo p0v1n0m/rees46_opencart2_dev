@@ -1,6 +1,7 @@
 <?php
 // Text
 $_['text_tax']                  = 'Без налога:';
+$_['text_more']                 = 'Подробнее';
 $_['text_type_interesting']     = 'Возможно, вам это понравится';
 $_['text_type_also_bought']     = 'С этим товаром покупают';
 $_['text_type_similar']         = 'Похожие товары';

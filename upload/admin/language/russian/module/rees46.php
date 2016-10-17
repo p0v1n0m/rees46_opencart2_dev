@@ -21,6 +21,12 @@ $_['text_type_see_also']        = 'Посмотрите также';
 $_['text_type_recently_viewed'] = 'Вы недавно смотрели';
 $_['text_type_buying_now']      = 'Прямо сейчас покупают';
 $_['text_type_search']          = 'Пользователи, искавшие этот товар, также купили';
+$_['text_template_default']     = 'По умолчанию';
+$_['text_template_basic']       = 'Базовый REES46';
+$_['text_template_bestseller']  = 'Хиты продаж';
+$_['text_template_featured']    = 'Рекомендуемые';
+$_['text_template_latest']      = 'Последние';
+$_['text_template_special']     = 'Акции';
 
 // Entry
 $_['entry_shop_id']             = 'Shop id';
@@ -32,6 +38,7 @@ $_['entry_type']                = 'Тип';
 $_['entry_limit']               = 'Лимит';
 $_['entry_width']               = 'Ширина изображения';
 $_['entry_height']              = 'Высота изображения';
+$_['entry_template']            = 'Шаблон';
 $_['entry_css']                 = 'Загружать CSS-стили из кабинета REES46';
 
 // Error

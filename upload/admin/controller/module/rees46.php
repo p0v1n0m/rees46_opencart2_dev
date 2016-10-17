@@ -59,6 +59,12 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_type_recently_viewed'] = $this->language->get('text_type_recently_viewed');
 		$data['text_type_buying_now'] = $this->language->get('text_type_buying_now');
 		$data['text_type_search'] = $this->language->get('text_type_search');
+		$data['text_template_default'] = $this->language->get('text_template_default');
+		$data['text_template_basic'] = $this->language->get('text_template_basic');
+		$data['text_template_bestseller'] = $this->language->get('text_template_bestseller');
+		$data['text_template_featured'] = $this->language->get('text_template_featured');
+		$data['text_template_latest'] = $this->language->get('text_template_latest');
+		$data['text_template_special'] = $this->language->get('text_template_special');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -68,6 +74,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_limit'] = $this->language->get('entry_limit');
 		$data['entry_width'] = $this->language->get('entry_width');
 		$data['entry_height'] = $this->language->get('entry_height');
+		$data['entry_template'] = $this->language->get('entry_template');
 		$data['entry_css'] = $this->language->get('entry_css');
 
 		if (isset($this->error['warning'])) {
