@@ -80,11 +80,6 @@
 									</div>
 								</div>
 							</div>
-							<!--div class="form-group">
-								<div class="col-sm-10 col-sm-offset-2">
-									<div class="alert alert-info"><i class="fa fa-exclamation-circle"></i> Перед экспортом сохраните настройки!</div>
-								</div>
-							</div-->
 							<div class="form-group">
 								<div class="col-sm-10 col-sm-offset-2">
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><i class="fa fa-play"></i> <?php echo $button_start; ?></button>
@@ -250,7 +245,7 @@
 						<div class="tab-pane" id="tab-help">
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $text_documentation; ?></label>
-								<div class="col-sm-10"><a href="http://docs.rees46.com/display/R46D/OpenCart+2" target="_blank" class="btn">http://docs.rees46.com/display/R46D/OpenCart+2</a></div>
+								<div class="col-sm-10"><a href="<?php echo $text_documentation_url; ?>" target="_blank" class="btn"><?php echo $text_documentation_url; ?></a></div>
 							</div>
 						</div>
 					</div>

@@ -21,6 +21,7 @@ $_['text_error_subscribers']      = 'Error: No customers for export!';
 $_['text_edit']                   = 'Edit Module';
 $_['text_tab_module']             = 'Module';
 $_['text_documentation']          = 'Documentation';
+$_['text_documentation_url']      = 'http://docs.rees46.com/display/R46D/OpenCart+2';
 $_['text_type_interesting']       = 'You may like it';
 $_['text_type_also_bought']       = 'Also bought with this product';
 $_['text_type_similar']           = 'Similar products';

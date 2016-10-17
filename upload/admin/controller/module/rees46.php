@@ -55,6 +55,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_edit'] = $this->language->get('text_edit');
 		$data['text_tab_module'] = $this->language->get('text_tab_module');
 		$data['text_documentation'] = $this->language->get('text_documentation');
+		$data['text_documentation_url'] = $this->language->get('text_documentation_url');
 		$data['text_type_interesting'] = $this->language->get('text_type_interesting');
 		$data['text_type_also_bought'] = $this->language->get('text_type_also_bought');
 		$data['text_type_similar'] = $this->language->get('text_type_similar');
