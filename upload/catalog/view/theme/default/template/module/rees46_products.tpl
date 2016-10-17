@@ -1,3 +1,8 @@
+<?php if ($css) { ?>
+<script type="text/javascript"><!--
+r46('add_css', 'recommendations'); 
+--></script>
+<?php } ?>
 <h3><?php echo $heading_title; ?></h3>
 <div class="row">
   <?php foreach ($products as $product) { ?>

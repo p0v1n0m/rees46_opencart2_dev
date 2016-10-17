@@ -32,6 +32,7 @@ $_['entry_type']                = 'Type';
 $_['entry_limit']               = 'Limit';
 $_['entry_width']               = 'Image Width';
 $_['entry_height']              = 'Image Height';
+$_['entry_css']                 = 'Loading CSS-styles of REES46';
 
 // Error
 $_['error_permission']          = 'Warning: You do not have permission to modify REES46 module!';

@@ -133,6 +133,12 @@ class ControllerModuleRees46 extends Controller {
 				$height = 100;
 			}
 
+			if ($setting['css']) {
+				$data['css'] = $setting['css'];
+			} else {
+				$data['css'] = false;
+			}
+
 			$data['products'] = array();
 
 			$product_ids = explode(',', $this->request->get['product_ids']);

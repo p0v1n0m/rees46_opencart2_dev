@@ -126,6 +126,20 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-css<?php echo $module['module_id']; ?>"><?php echo $entry_css; ?></label>
+												<div class="col-sm-10">
+													<div class="btn-group" data-toggle="buttons" id="input-css<?php echo $module['module_id']; ?>">
+														<?php if ($module['setting']['css'] == 1) { ?>
+														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+														<?php } else { ?>
+														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+														<?php } ?>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-status<?php echo $module['module_id']; ?>"><?php echo $entry_status; ?></label>
 												<div class="col-sm-10">
 													<div class="btn-group" data-toggle="buttons" id="input-status<?php echo $module['module_id']; ?>">
@@ -217,6 +231,15 @@ function addModule() {
 	html += '		<label class="col-sm-2 control-label" for="input-height' + module_row + '"><?php echo $entry_height; ?></label>';
 	html += '		<div class="col-sm-10">';
 	html += '			<input type="text" name="module[' + module_row + '][height]" value="" id="input-height' + module_row + '" class="form-control" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	<div class="form-group">';
+	html += '		<label class="col-sm-2 control-label" for="input-css' + module_row + '"><?php echo $entry_css; ?></label>';
+	html += '		<div class="col-sm-10">';
+	html += '			<div class="btn-group" data-toggle="buttons" id="input-css' + module_row + '">';
+	html += '				<label class="btn btn-info active"><input type="radio" name="module[' + module_row + '][css]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>';
+	html += '				<label class="btn btn-info"><input type="radio" name="module[' + module_row + '][css]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>';
+	html += '			</div>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group">';
