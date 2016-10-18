@@ -287,31 +287,33 @@ class ControllerModuleRees46 extends Controller {
 				$data = array();
 
 				foreach ($results as $result) {
-					$order_products = array();
+					if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
+						$order_products = array();
 
-					$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
+						$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
 
-					foreach ($products as $product) {
-						$categories = array();
+						foreach ($products as $product) {
+							$categories = array();
 
-						$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+							$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
 
-						$order_products[] = array(
-							'id'           => $product['product_id'],
-							'price'        => $product['price'],
-							'categories'   => $categories,
-							'is_available' => $product['stock'],
-							'amount'       => $product['quantity']
+							$order_products[] = array(
+								'id'           => $product['product_id'],
+								'price'        => $product['price'],
+								'categories'   => $categories,
+								'is_available' => $product['stock'],
+								'amount'       => $product['quantity']
+							);
+						}
+
+						$data[] = array(
+							'id'         => $result['order_id'],
+							'user_id'    => $result['customer_id'],
+							'user_email' => $result['email'],
+							'date'       => strtotime($result['date_added']),
+							'items'      => $order_products
 						);
 					}
-
-					$data[] = array(
-						'id'         => $result['order_id'],
-						'user_id'    => $result['customer_id'],
-						'user_email' => $result['email'],
-						'date'       => strtotime($result['date_added']),
-						'items'      => $order_products
-					);
 				}
 			} elseif ($this->request->post['type'] == 'subscribers') {
 				if (!$this->config->get('rees46_subscribers')) {
@@ -370,24 +372,6 @@ class ControllerModuleRees46 extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	protected function curl($url, $params) {
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-
-		$data['result'] = curl_exec($ch);
-		$data['info'] = curl_getinfo($ch);
-
-		curl_close($ch);
-
-		return $data;
-	}
-
 	public function exportOrder($order_id) {
 		$this->load->language('module/rees46');
 
@@ -396,7 +380,7 @@ class ControllerModuleRees46 extends Controller {
 
 		$result = $this->model_module_rees46->getOrder($order_id);
 
-		if ($this->config->get('rees46_tracking_status') && $result) {
+		if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
 			$order_products = array();
 
 			$products = $this->model_module_rees46->getOrderProducts($order_id);
@@ -474,6 +458,24 @@ class ControllerModuleRees46 extends Controller {
 				}
 			}
 		}
+	}
+
+	protected function curl($url, $params) {
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+		$data['result'] = curl_exec($ch);
+		$data['info'] = curl_getinfo($ch);
+
+		curl_close($ch);
+
+		return $data;
 	}
 
 	protected function validate() {
