@@ -42,8 +42,8 @@ $_['text_customers']              = 'All Customers';
 $_['text_export_info']            = 'Please save settings before export!';
 
 // Entry
-$_['entry_shop_id']               = 'Shop id';
-$_['entry_secret_key']            = 'Secret key';
+$_['entry_shop_id']               = 'Shop Id';
+$_['entry_secret_key']            = 'Secret Key';
 $_['entry_status']                = 'Status';
 $_['entry_export']                = 'Type Export';
 $_['entry_name']                  = 'Module Name';
@@ -52,11 +52,11 @@ $_['entry_type']                  = 'Type';
 $_['entry_limit']                 = 'Limit';
 $_['entry_width']                 = 'Image Width';
 $_['entry_height']                = 'Image Height';
-$_['entry_template']              = 'Template';
+$_['entry_template']              = 'Template Products Block';
 $_['entry_css']                   = 'Loading CSS-styles of REES46';
-$_['entry_discount']              = 'Only special products';
-$_['entry_brands']                = 'Only products of brands';
-$_['entry_exclude_brands']        = 'Exclude products of brands';
+$_['entry_discount']              = 'Only Special Products';
+$_['entry_brands']                = 'Only Products of Brands';
+$_['entry_exclude_brands']        = 'Exclude Products of Brands';
 
 // Error
 $_['error_permission']            = 'Warning: You do not have permission to modify REES46 module!';

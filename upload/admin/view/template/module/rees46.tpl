@@ -81,10 +81,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-sm-2">
+								<div class="col-sm-10 col-sm-offset-2">
 									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_export_info; ?></div>
 								</div>
-								<div class="col-sm-10">
+								<div class="col-sm-10 col-sm-offset-2">
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><i class="fa fa-play"></i> <?php echo $button_start; ?></button>
 								</div>
 							</div>
@@ -199,7 +199,7 @@
 												<label class="col-sm-2 control-label"><?php echo $entry_brands; ?></label>
 												<div class="col-sm-10">
 													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />
-													<div class="well well-sm" style="height: 150px; overflow: auto;">
+													<div class="well well-sm" style="height: 100px; overflow: auto;">
 														<?php if (isset($module['manufacturers'])) { ?>
 														<?php foreach ($module['manufacturers'] as $manufacturer) { ?>
 														<div class="module-autocomplete<?php echo $manufacturer['manufacturer_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $manufacturer['name']; ?>
@@ -214,7 +214,7 @@
 												<label class="col-sm-2 control-label"><?php echo $entry_exclude_brands; ?></label>
 												<div class="col-sm-10">
 													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete-exclude" />
-													<div class="well well-sm" style="height: 150px; overflow: auto;">
+													<div class="well well-sm" style="height: 100px; overflow: auto;">
 														<?php if (isset($module['manufacturers_exclude'])) { ?>
 														<?php foreach ($module['manufacturers_exclude'] as $manufacturer) { ?>
 														<div class="module-autocomplete<?php echo $manufacturer['manufacturer_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $manufacturer['name']; ?>
@@ -410,14 +410,14 @@ function addModule() {
 	html += '		<label class="col-sm-2 control-label" for="input-manufacturers' + module_row + '"><?php echo $entry_brands; ?></label>';
 	html += '		<div class="col-sm-10">';
 	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />';
-	html += '			<div class="well well-sm" style="height: 150px; overflow: auto;"></div>';
+	html += '			<div class="well well-sm" style="height: 100px; overflow: auto;"></div>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group" id="autocomplete-exclude' + module_row + '">';
 	html += '		<label class="col-sm-2 control-label" for="input-manufacturers-exclude' + module_row + '"><?php echo $entry_exclude_brands; ?></label>';
 	html += '		<div class="col-sm-10">';
 	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete-exclude" />';
-	html += '			<div class="well well-sm" style="height: 150px; overflow: auto;"></div>';
+	html += '			<div class="well well-sm" style="height: 100px; overflow: auto;"></div>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group">';
