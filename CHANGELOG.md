@@ -1,4 +1,4 @@
 # Changelog
 
-## 0.1.0
-* Development
+## 1.0.0
+* Inital Release
