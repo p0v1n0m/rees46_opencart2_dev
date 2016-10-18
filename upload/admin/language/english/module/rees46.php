@@ -17,10 +17,9 @@ $_['text_module']                 = 'Modules';
 $_['text_success']                = 'Success: You have modified REES46 module!';
 $_['text_processing_orders']      = 'Processing: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
 $_['text_success_orders']         = 'Success: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
-$_['text_error_orders']           = 'Error: No orders for export!';
 $_['text_processing_subscribers'] = 'Processing: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
 $_['text_success_subscribers']    = 'Success: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
-$_['text_error_subscribers']      = 'Error: No customers for export!';
+$_['text_error_export']           = 'Error: No data for export!';
 $_['text_edit']                   = 'Edit Module';
 $_['text_tab_module']             = 'Module';
 $_['text_documentation']          = 'Documentation';
@@ -43,7 +42,8 @@ $_['text_autocomplete']           = 'Autocomplete';
 $_['text_subscribers']            = 'Newsletter Subscribers';
 $_['text_customers']              = 'All Customers';
 $_['text_info_1']                 = 'Will be exported orders over the past six months.';
-$_['text_info_2']                 = 'Please save settings before export!';
+$_['text_info_2']                 = '';
+$_['text_info_3']                 = 'Please save settings before export!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop Id';

@@ -75,6 +75,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['text_customers'] = $this->language->get('text_customers');
 		$data['text_info_1'] = $this->language->get('text_info_1');
 		$data['text_info_2'] = $this->language->get('text_info_2');
+		$data['text_info_3'] = $this->language->get('text_info_3');
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
@@ -227,11 +228,12 @@ class ControllerModuleRees46 extends Controller {
 		$this->response->setOutput($this->load->view('module/rees46.tpl', $data));
 	}
 
-	public function exportOrders() {
+	public function export() {
 		$this->load->language('module/rees46');
 
 		$this->load->model('module/rees46');
 		$this->load->model('catalog/product');
+		$this->load->model('customer/customer');
 
 		$json = array();
 
@@ -248,130 +250,94 @@ class ControllerModuleRees46 extends Controller {
 				$filter_data['start'] = 0;
 			}
 
-			$results_total = $this->model_module_rees46->getTotalOrders();
+			if ($this->request->post['type'] == 'orders') {
+				$results_total = $this->model_module_rees46->getTotalOrders();
 
-			$results = $this->model_module_rees46->getOrders($filter_data);
+				$results = $this->model_module_rees46->getOrders($filter_data);
 
-			$orders = array();
+				$data = array();
 
-			foreach ($results as $result) {
-				$order_products = array();
+				foreach ($results as $result) {
+					$order_products = array();
 
-				$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
+					$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
 
-				foreach ($products as $product) {
-					$categories = array();
+					foreach ($products as $product) {
+						$categories = array();
 
-					$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+						$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
 
-					$order_products[] = array(
-						'id'           => $product['product_id'],
-						'price'        => $product['price'],
-						'categories'   => $categories,
-						'is_available' => $product['stock'],
-						'amount'       => $product['quantity']
+						$order_products[] = array(
+							'id'           => $product['product_id'],
+							'price'        => $product['price'],
+							'categories'   => $categories,
+							'is_available' => $product['stock'],
+							'amount'       => $product['quantity']
+						);
+					}
+
+					$data[] = array(
+						'id'         => $result['order_id'],
+						'user_id'    => $result['customer_id'],
+						'user_email' => $result['email'],
+						'date'       => strtotime($result['date_added']),
+						'items'      => $order_products
 					);
 				}
+			} elseif ($this->request->post['type'] == 'statuses') {
+				//
+			} elseif ($this->request->post['type'] == 'subscribers') {
+				if (!$this->config->get('rees46_subscribers')) {
+					$filter_data['filter_newsletter'] = 1;
+				}
 
-				$orders[] = array(
-					'id'         => $result['order_id'],
-					'user_id'    => $result['customer_id'],
-					'user_email' => $result['email'],
-					'date'       => strtotime($result['date_added']),
-					'items'      => $order_products
-				);
+				$results_total = $this->model_customer_customer->getTotalCustomers($filter_data);
+
+				$results = $this->model_customer_customer->getCustomers($filter_data);
+
+				$data = array();
+
+				foreach ($results as $result) {
+					$data[] = array(
+						'id'    => $result['customer_id'],
+						'email' => $result['email']
+					);
+				}
 			}
 
-			if (!empty($orders)) {
-				$url = 'http://api.rees46.com/import/orders';
-
+			if (!empty($data)) {
 				$params['shop_id'] = $this->config->get('rees46_shop_id');
 				$params['shop_secret'] = $this->config->get('rees46_secret_key');
-				$params['orders'] = $orders;
 
-				$data = $this->curl($url, json_encode($params, true));
+				if ($this->request->post['type'] == 'orders') {
+					$params['orders'] = $data;
 
-				if ($data['info']['http_code'] < 200 || $data['info']['http_code'] >= 300) {
-					$json['error'] = $data['info']['http_code'];
+					$url = 'http://api.rees46.com/import/orders';
+				} elseif ($this->request->post['type'] == 'statuses') {
+					$params['orders'] = $data;
+
+					$url = 'http://api.rees46.com/import/sync_orders';
+				} elseif ($this->request->post['type'] == 'subscribers') {
+					$params['audience'] = $data;
+
+					$url = 'http://api.rees46.com/import/audience';
+				}
+
+				$return = $this->curl($url, json_encode($params, true));
+
+				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
+					$json['error'] = $return['info']['http_code'];
 				} else {
 					if ($results_total > $next * $limit) {
 						$json['next'] = $next + 1;
 
-						$json['success'] = sprintf($this->language->get('text_processing_orders'), $next * $limit ? $results_total : 0, $results_total);
+						$json['success'] = sprintf($this->language->get('text_processing_' . $this->request->post['type']), $next * $limit ? $results_total : 0, $results_total);
 					} else {
-						$json['success'] = sprintf($this->language->get('text_success_orders'), $results_total, $results_total);
+						$json['success'] = sprintf($this->language->get('text_success_' . $this->request->post['type']), $results_total, $results_total);
 					}
 				}
 			} else {
-				$json['error'] = $this->language->get('text_error_orders');
-			}
-		} else {
-			$json['error'] = $this->language->get('error_permission');
-		}
-
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
-	}
-
-	public function exportSubscribers() {
-		$this->load->language('module/rees46');
-
-		$this->load->model('customer/customer');
-
-		$json = array();
-
-		if ($this->validate()) {
-			$next = $this->request->post['next'];
-			$limit = 100;
-
-			$filter_data = array(
-				'start' => ($next - 1) * $limit,
-				'limit' => $limit
-			);
-
-			if ($filter_data['start'] < 0) {
-				$filter_data['start'] = 0;
-			}
-
-			if (!$this->config->get('rees46_subscribers')) {
-				$filter_data['filter_newsletter'] = 1;
-			}
-
-			$results_total = $this->model_customer_customer->getTotalCustomers($filter_data);
-
-			$results = $this->model_customer_customer->getCustomers($filter_data);
-
-			$emails = array();
-
-			foreach ($results as $result) {
-				$emails[] = array(
-					'id'    => $result['customer_id'],
-					'email' => $result['email']
-				);
-			}
-
-			if (!empty($emails)) {
-				$url = 'http://api.rees46.com/import/audience';
-
-				$params['shop_id'] = $this->config->get('rees46_shop_id');
-				$params['shop_secret'] = $this->config->get('rees46_secret_key');
-				$params['audience'] = $emails;
-
-				$data = $this->curl($url, json_encode($params, true));
-
-				if ($data['info']['http_code'] < 200 || $data['info']['http_code'] >= 300) {
-					$json['error'] = $data['info']['http_code'];
-				} else {
-					if ($results_total > $next * $limit) {
-						$json['next'] = $next + 1;
-
-						$json['success'] = sprintf($this->language->get('text_processing_subscribers'), $next * $limit ? $results_total : 0, $results_total);
-					} else {
-						$json['success'] = sprintf($this->language->get('text_success_subscribers'), $results_total, $results_total);
-					}
-				}
-			} else {
-				$json['error'] = $this->language->get('text_error_subscribers');
+				$json['error'] = $this->language->get('text_error_export');
 			}
 		} else {
 			$json['error'] = $this->language->get('error_permission');

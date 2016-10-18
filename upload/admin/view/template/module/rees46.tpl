@@ -70,6 +70,13 @@
 									<button type="button" onclick="startExport('orders');" class="btn btn-success" id="button-start-orders"><?php echo $button_export; ?></button>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_export_statuses; ?></label>
+								<div class="col-sm-10">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?></div>
+									<button type="button" onclick="startExport('statuses');" class="btn btn-success" id="button-start-statuses"><?php echo $button_export; ?></button>
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane" id="tab-subscribers">
 							<div class="form-group">
@@ -89,7 +96,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $entry_export_subscribers; ?></label>
 								<div class="col-sm-10">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?></div>
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_3; ?></div>
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><?php echo $button_export; ?></button>
 								</div>
 							</div>
@@ -218,7 +225,7 @@
 											<div class="form-group" id="autocomplete-exclude<?php echo $module['module_id']; ?>">
 												<label class="col-sm-2 control-label"><?php echo $entry_exclude_brands; ?></label>
 												<div class="col-sm-10">
-													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete-exclude" />
+													<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />
 													<div class="well well-sm" style="height: 100px; overflow: auto;">
 														<?php if (isset($module['manufacturers_exclude'])) { ?>
 														<?php foreach ($module['manufacturers_exclude'] as $manufacturer) { ?>
@@ -292,33 +299,11 @@ $('.autocomplete').autocomplete({
 
 		$('#' + id + ' .module-autocomplete' + item['value']).remove();
 
-		$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
-	}
-});
-
-$('.autocomplete-exclude').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/manufacturer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['manufacturer_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		var id = $(this).parent().parent('.form-group').attr('id');
-
-		$('#' + id + ' .autocomplete').val('');
-
-		$('#' + id + ' .module-autocomplete' + item['value']).remove();
-
-		$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete-exclude','') + '][manufacturers_exclude][]" value="' + item['value'] + '" /></div>');
+		if (isNaN(id.replace('autocomplete',''))) {
+			$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete-exclude','') + '][manufacturers_exclude][]" value="' + item['value'] + '" /></div>');
+		} else {
+			$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
+		}
 	}
 });
 
@@ -421,7 +406,7 @@ function addModule() {
 	html += '	<div class="form-group" id="autocomplete-exclude' + module_row + '">';
 	html += '		<label class="col-sm-2 control-label" for="input-manufacturers-exclude' + module_row + '"><?php echo $entry_exclude_brands; ?></label>';
 	html += '		<div class="col-sm-10">';
-	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete-exclude" />';
+	html += '			<input type="text" value="" placeholder="<?php echo $text_autocomplete; ?>" class="form-control autocomplete" />';
 	html += '			<div class="well well-sm" style="height: 100px; overflow: auto;"></div>';
 	html += '		</div>';
 	html += '	</div>';
@@ -466,33 +451,11 @@ function addModule() {
 
 			$('#' + id + ' .module-autocomplete' + item['value']).remove();
 
-			$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
-		}
-	});
-
-	$('.autocomplete-exclude').autocomplete({
-		'source': function(request, response) {
-			$.ajax({
-				url: 'index.php?route=catalog/manufacturer/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
-				dataType: 'json',
-				success: function(json) {
-					response($.map(json, function(item) {
-						return {
-							label: item['name'],
-							value: item['manufacturer_id']
-						}
-					}));
-				}
-			});
-		},
-		'select': function(item) {
-			var id = $(this).parent().parent('.form-group').attr('id');
-
-			$('#' + id + ' .autocomplete').val('');
-
-			$('#' + id + ' .module-autocomplete' + item['value']).remove();
-
-			$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete-exclude','') + '][manufacturers_exclude][]" value="' + item['value'] + '" /></div>');
+			if (isNaN(id.replace('autocomplete',''))) {
+				$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete-exclude','') + '][manufacturers_exclude][]" value="' + item['value'] + '" /></div>');
+			} else {
+				$('#' + id + ' .well').append('<div class="module-autocomplete' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="module[' + id.replace('autocomplete','') + '][manufacturers][]" value="' + item['value'] + '" /></div>');
+			}
 		}
 	});
 
@@ -503,7 +466,7 @@ function addModule() {
 
 function startExport(type, next = 1) {
 	$.ajax({
-		url: 'index.php?route=module/rees46/export' + type + '&token=' + getURLVar('token'),
+		url: 'index.php?route=module/rees46/export&token=' + getURLVar('token'),
 		type: 'post',
 		data: 'type=' + type + '&next=' + next,
 		dataType: 'json',
