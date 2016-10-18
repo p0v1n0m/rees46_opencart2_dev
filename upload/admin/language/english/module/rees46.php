@@ -10,11 +10,14 @@ $_['tab_modules']                 = 'Modules';
 $_['tab_help']                    = 'Help';
 
 // Button
-$_['button_start']                = 'Start Export';
+$_['button_export']               = 'Start Export';
 
 // Text
 $_['text_module']                 = 'Modules';
 $_['text_success']                = 'Success: You have modified REES46 module!';
+$_['text_processing_orders']      = 'Processing: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
+$_['text_success_orders']         = 'Success: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
+$_['text_error_orders']           = 'Error: No orders for export!';
 $_['text_processing_subscribers'] = 'Processing: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
 $_['text_success_subscribers']    = 'Success: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
 $_['text_error_subscribers']      = 'Error: No customers for export!';
@@ -39,13 +42,16 @@ $_['text_template_special']       = 'Special';
 $_['text_autocomplete']           = 'Autocomplete';
 $_['text_subscribers']            = 'Newsletter Subscribers';
 $_['text_customers']              = 'All Customers';
-$_['text_export_info']            = 'Please save settings before export!';
+$_['text_info_1']                 = 'Will be exported orders over the past six months.';
+$_['text_info_2']                 = 'Please save settings before export!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop Id';
 $_['entry_secret_key']            = 'Secret Key';
 $_['entry_status']                = 'Status';
-$_['entry_export']                = 'Type Export';
+$_['entry_export_orders']         = 'Export Orders';
+$_['entry_export_subscribers']    = 'Export Subscribers';
+$_['entry_export_type']           = 'Type Export';
 $_['entry_name']                  = 'Module Name';
 $_['entry_title']                 = 'Title';
 $_['entry_type']                  = 'Type';

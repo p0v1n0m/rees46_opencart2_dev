@@ -63,11 +63,17 @@
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-orders">
-
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_export_orders; ?></label>
+								<div class="col-sm-10">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?></div>
+									<button type="button" onclick="startExport('orders');" class="btn btn-success" id="button-start-orders"><?php echo $button_export; ?></button>
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane" id="tab-subscribers">
 							<div class="form-group">
-								<label class="col-sm-2 control-label"><?php echo $entry_export; ?></label>
+								<label class="col-sm-2 control-label"><?php echo $entry_export_type; ?></label>
 								<div class="col-sm-10">
 									<div class="btn-group" data-toggle="buttons">
 										<?php if ($rees46_subscribers) { ?>
@@ -81,11 +87,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-sm-10 col-sm-offset-2">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_export_info; ?></div>
-								</div>
-								<div class="col-sm-10 col-sm-offset-2">
-									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><i class="fa fa-play"></i> <?php echo $button_start; ?></button>
+								<label class="col-sm-2 control-label"><?php echo $entry_export_subscribers; ?></label>
+								<div class="col-sm-10">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?></div>
+									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><?php echo $button_export; ?></button>
 								</div>
 							</div>
 						</div>

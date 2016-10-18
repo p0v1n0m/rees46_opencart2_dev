@@ -10,11 +10,14 @@ $_['tab_modules']                 = 'Модули';
 $_['tab_help']                    = 'Помощь';
 
 // Button
-$_['button_start']                = 'Начать экспорт';
+$_['button_export']               = 'Начать экспорт';
 
 // Text
 $_['text_module']                 = 'Модули';
 $_['text_success']                = 'Настройки модуля REES46 обновлены!';
+$_['text_processing_orders']      = 'Обработка: Вы экспортировали в REES46 <b>%s</b> из <b>%s</b> заказов!';
+$_['text_success_orders']         = 'Успех: Вы экспортировали в REES46 <b>%s</b> из <b>%s</b> заказов!';
+$_['text_error_orders']           = 'Ошибка: Нет заказов для экспорта!';
 $_['text_processing_subscribers'] = 'Обработка: Вы экспортировали в REES46 <b>%s</b> из <b>%s</b> выбранных покупателей!';
 $_['text_success_subscribers']    = 'Успех: Вы экспортировали в REES46 <b>%s</b> из <b>%s</b> выбранных покупателей!';
 $_['text_error_subscribers']      = 'Ошибка: Нет покупателей для экспорта!';
@@ -39,13 +42,16 @@ $_['text_template_special']       = 'Акции';
 $_['text_autocomplete']           = 'Автодополнение';
 $_['text_subscribers']            = 'Подписчики на новости';
 $_['text_customers']              = 'Все покупатели';
-$_['text_export_info']            = 'Пожалуйста, сохраните настройки перед экспортом!';
+$_['text_info_1']                 = 'Будут экспортированы заказы за последние пол года.';
+$_['text_info_2']                 = 'Пожалуйста, сохраните настройки перед экспортом!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop id';
 $_['entry_secret_key']            = 'Secret key';
 $_['entry_status']                = 'Статус';
-$_['entry_export']                = 'Тип экспорта';
+$_['entry_export_orders']         = 'Экспорт заказов';
+$_['entry_export_subscribers']    = 'Экспорт подписчиков';
+$_['entry_export_type']           = 'Тип экспорта';
 $_['entry_name']                  = 'Название модуля';
 $_['entry_title']                 = 'Заголовок';
 $_['entry_type']                  = 'Тип';
