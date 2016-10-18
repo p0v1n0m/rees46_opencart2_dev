@@ -5,12 +5,13 @@ class ControllerModuleRees46 extends Controller {
 	public function index() {
 		$this->load->language('module/rees46');
 
-		$this->document->setTitle($this->language->get('heading_title'));
+		$this->document->setTitle(strip_tags($this->language->get('heading_title')));
 
 		$this->load->model('setting/setting');
 		$this->load->model('extension/module');
-		$this->load->model('localisation/language');
 		$this->load->model('catalog/manufacturer');
+		$this->load->model('localisation/language');
+		$this->load->model('localisation/order_status');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			if (!empty($this->request->post['module'])) {
@@ -80,6 +81,9 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
 		$data['entry_export_orders'] = $this->language->get('entry_export_orders');
+		$data['entry_status_created'] = $this->language->get('entry_status_created');
+		$data['entry_status_completed'] = $this->language->get('entry_status_completed');
+		$data['entry_status_cancelled'] = $this->language->get('entry_status_cancelled');
 		$data['entry_export_subscribers'] = $this->language->get('entry_export_subscribers');
 		$data['entry_export_type'] = $this->language->get('entry_export_type');
 		$data['entry_name'] = $this->language->get('entry_name');
@@ -114,12 +118,12 @@ class ControllerModuleRees46 extends Controller {
 
 		if (!isset($this->request->get['module_id'])) {
 			$data['breadcrumbs'][] = array(
-				'text' => $this->language->get('heading_title'),
+				'text' => strip_tags($this->language->get('heading_title')),
 				'href' => $this->url->link('module/rees46', 'token=' . $this->session->data['token'], 'SSL')
 			);
 		} else {
 			$data['breadcrumbs'][] = array(
-				'text' => $this->language->get('heading_title'),
+				'text' => strip_tags($this->language->get('heading_title')),
 				'href' => $this->url->link('module/rees46', 'token=' . $this->session->data['token'] . '&module_id=' . $this->request->get['module_id'], 'SSL')
 			);
 		}
@@ -148,6 +152,30 @@ class ControllerModuleRees46 extends Controller {
 			$data['rees46_tracking_status'] = $this->request->post['rees46_tracking_status'];
 		} else {
 			$data['rees46_tracking_status'] = $this->config->get('rees46_tracking_status');
+		}
+
+		if (isset($this->request->post['rees46_status_created'])) {
+			$data['rees46_status_created'] = $this->request->post['rees46_status_created'];
+		} elseif ($this->config->get('rees46_status_created')) {
+			$data['rees46_status_created'] = $this->config->get('rees46_status_created');
+		} else {
+			$data['rees46_status_created'] = array();
+		}
+
+		if (isset($this->request->post['rees46_status_completed'])) {
+			$data['rees46_status_completed'] = $this->request->post['rees46_status_completed'];
+		} elseif ($this->config->get('rees46_status_completed')) {
+			$data['rees46_status_completed'] = $this->config->get('rees46_status_completed');
+		} else {
+			$data['rees46_status_completed'] = array();
+		}
+
+		if (isset($this->request->post['rees46_status_cancelled'])) {
+			$data['rees46_status_cancelled'] = $this->request->post['rees46_status_cancelled'];
+		} elseif ($this->config->get('rees46_status_cancelled')) {
+			$data['rees46_status_cancelled'] = $this->config->get('rees46_status_cancelled');
+		} else {
+			$data['rees46_status_cancelled'] = array();
 		}
 
 		if (isset($this->request->post['rees46_subscribers'])) {
@@ -220,6 +248,7 @@ class ControllerModuleRees46 extends Controller {
 
 		$data['token'] = $this->session->data['token'];
 		$data['languages'] = $this->model_localisation_language->getLanguages();
+		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -284,8 +313,6 @@ class ControllerModuleRees46 extends Controller {
 						'items'      => $order_products
 					);
 				}
-			} elseif ($this->request->post['type'] == 'statuses') {
-				//
 			} elseif ($this->request->post['type'] == 'subscribers') {
 				if (!$this->config->get('rees46_subscribers')) {
 					$filter_data['filter_newsletter'] = 1;
@@ -313,10 +340,6 @@ class ControllerModuleRees46 extends Controller {
 					$params['orders'] = $data;
 
 					$url = 'http://api.rees46.com/import/orders';
-				} elseif ($this->request->post['type'] == 'statuses') {
-					$params['orders'] = $data;
-
-					$url = 'http://api.rees46.com/import/sync_orders';
 				} elseif ($this->request->post['type'] == 'subscribers') {
 					$params['audience'] = $data;
 
@@ -365,11 +388,112 @@ class ControllerModuleRees46 extends Controller {
 		return $data;
 	}
 
+	public function exportOrder($order_id) {
+		$this->load->language('module/rees46');
+
+		$this->load->model('module/rees46');
+		$this->load->model('catalog/product');
+
+		$result = $this->model_module_rees46->getOrder($order_id);
+
+		if ($this->config->get('rees46_tracking_status') && $result) {
+			$order_products = array();
+
+			$products = $this->model_module_rees46->getOrderProducts($order_id);
+
+			foreach ($products as $product) {
+				$categories = array();
+
+				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+
+				$order_products[] = array(
+					'id'           => $product['product_id'],
+					'price'        => $product['price'],
+					'categories'   => $categories,
+					'is_available' => $product['stock'],
+					'amount'       => $product['quantity']
+				);
+			}
+
+			$data[] = array(
+				'id'         => $order_id,
+				'user_id'    => $result['customer_id'],
+				'user_email' => $result['email'],
+				'date'       => strtotime($result['date_added']),
+				'items'      => $order_products
+			);
+
+			if (!empty($data)) {
+				$params['shop_id'] = $this->config->get('rees46_shop_id');
+				$params['shop_secret'] = $this->config->get('rees46_secret_key');
+				$params['orders'] = $data;
+
+				$url = 'http://api.rees46.com/import/orders';
+
+				$return = $this->curl($url, json_encode($params, true));
+
+				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
+					// error log $return['info']['http_code'] and $order_id
+				} else {
+					// success log $order_id
+				}
+			}
+		}
+	}
+
+	public function exportStatus($order) {
+		if ($this->config->get('rees46_tracking_status')) {
+			$this->load->language('module/rees46');
+
+			if (in_array($order['order_status_id'], $this->config->get('rees46_status_created'))) {
+				$status = 0;
+			} elseif (in_array($order['order_status_id'], $this->config->get('rees46_status_completed'))) {
+				$status = 1;
+			} elseif (in_array($order['order_status_id'], $this->config->get('rees46_status_cancelled'))) {
+				$status = 2;
+			}
+
+			if (isset($status)) {
+				$data[] = array(
+					'id'     => $order['order_id'],
+					'status' => $status
+				);
+
+				$params['shop_id'] = $this->config->get('rees46_shop_id');
+				$params['shop_secret'] = $this->config->get('rees46_secret_key');
+				$params['orders'] = $data;
+
+				$url = 'http://api.rees46.com/import/sync_orders';
+
+				$return = $this->curl($url, json_encode($params, true));
+
+				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
+					// error log $return['info']['http_code'] and $order['order_id']
+				} else {
+					// success log $order['order_id']
+				}
+			}
+		}
+	}
+
 	protected function validate() {
 		if (!$this->user->hasPermission('modify', 'module/rees46')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
 		return !$this->error;
+	}
+
+	public function install() {
+		$this->load->model('extension/event');
+
+		$this->model_extension_event->addEvent('rees46', 'post.order.add', 'module/rees46/exportOrder');
+		$this->model_extension_event->addEvent('rees46', 'pre.order.history.add', 'module/rees46/exportStatus');
+	}
+
+	public function uninstall() {
+		$this->load->model('extension/event');
+
+		$this->model_extension_event->deleteEvent('rees46');
 	}
 }

@@ -36,6 +36,11 @@
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-settings">
 							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?></div>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-2 control-label" for="input-shop_id"><?php echo $entry_shop_id; ?></label>
 								<div class="col-sm-10">
 									<input type="text" name="setting[rees46_shop_id]" value="<?php echo $rees46_shop_id; ?>" id="input-shop_id" class="form-control" />
@@ -64,17 +69,70 @@
 						</div>
 						<div class="tab-pane" id="tab-orders">
 							<div class="form-group">
-								<label class="col-sm-2 control-label"><?php echo $entry_export_orders; ?></label>
+								<label class="col-sm-2 control-label"><?php echo $entry_status_created; ?></label>
 								<div class="col-sm-10">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?></div>
-									<button type="button" onclick="startExport('orders');" class="btn btn-success" id="button-start-orders"><?php echo $button_export; ?></button>
+									<div class="well well-sm" style="height: 100px; overflow: auto;">
+										<?php foreach ($order_statuses as $order_status) { ?>
+										<div class="checkbox">
+											<label>
+												<?php if (in_array($order_status['order_status_id'], $rees46_status_created)) { ?>
+												<input type="checkbox" name="setting[rees46_status_created][]" value="<?php echo $order_status['order_status_id']; ?>" checked="checked" />
+												<?php echo $order_status['name']; ?>
+												<?php } else { ?>
+												<input type="checkbox" name="setting[rees46_status_created][]" value="<?php echo $order_status['order_status_id']; ?>" />
+												<?php echo $order_status['name']; ?>
+												<?php } ?>
+											</label>
+										</div>
+										<?php } ?>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label"><?php echo $entry_export_statuses; ?></label>
+								<label class="col-sm-2 control-label"><?php echo $entry_status_completed; ?></label>
+								<div class="col-sm-10">
+									<div class="well well-sm" style="height: 100px; overflow: auto;">
+										<?php foreach ($order_statuses as $order_status) { ?>
+										<div class="checkbox">
+											<label>
+												<?php if (in_array($order_status['order_status_id'], $rees46_status_completed)) { ?>
+												<input type="checkbox" name="setting[rees46_status_completed][]" value="<?php echo $order_status['order_status_id']; ?>" checked="checked" />
+												<?php echo $order_status['name']; ?>
+												<?php } else { ?>
+												<input type="checkbox" name="setting[rees46_status_completed][]" value="<?php echo $order_status['order_status_id']; ?>" />
+												<?php echo $order_status['name']; ?>
+												<?php } ?>
+											</label>
+										</div>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_status_cancelled; ?></label>
+								<div class="col-sm-10">
+									<div class="well well-sm" style="height: 100px; overflow: auto;">
+										<?php foreach ($order_statuses as $order_status) { ?>
+										<div class="checkbox">
+											<label>
+												<?php if (in_array($order_status['order_status_id'], $rees46_status_cancelled)) { ?>
+												<input type="checkbox" name="setting[rees46_status_cancelled][]" value="<?php echo $order_status['order_status_id']; ?>" checked="checked" />
+												<?php echo $order_status['name']; ?>
+												<?php } else { ?>
+												<input type="checkbox" name="setting[rees46_status_cancelled][]" value="<?php echo $order_status['order_status_id']; ?>" />
+												<?php echo $order_status['name']; ?>
+												<?php } ?>
+											</label>
+										</div>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_export_orders; ?></label>
 								<div class="col-sm-10">
 									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?></div>
-									<button type="button" onclick="startExport('statuses');" class="btn btn-success" id="button-start-statuses"><?php echo $button_export; ?></button>
+									<button type="button" onclick="startExport('orders');" class="btn btn-success" id="button-start-orders"><?php echo $button_export; ?></button>
 								</div>
 							</div>
 						</div>

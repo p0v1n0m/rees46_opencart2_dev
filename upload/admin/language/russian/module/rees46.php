@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']               = 'REES46';
+$_['heading_title']               = '<img src="view/image/rees46.png" width="20"> REES46';
 
 // Tab
 $_['tab_settings']                = 'Настройки';
@@ -41,8 +41,8 @@ $_['text_template_special']       = 'Акции';
 $_['text_autocomplete']           = 'Автодополнение';
 $_['text_subscribers']            = 'Подписчики на новости';
 $_['text_customers']              = 'Все покупатели';
-$_['text_info_1']                 = 'Будут экспортированы заказы за последние пол года.';
-$_['text_info_2']                 = '';
+$_['text_info_1']                 = '<a href="https://rees46.com/customers/sign_up" target="_blank">Для использования модуля необходимо зарегистрироваться на rees46.com!</a>';
+$_['text_info_2']                 = 'Экспортируйте только один раз при первой настройке модуля. Будут экспортированы заказы за последние пол года с выбранными выше статусами. Пожалуйста, сохраните настройки перед экспортом!';
 $_['text_info_3']                 = 'Пожалуйста, сохраните настройки перед экспортом!';
 
 // Entry
@@ -50,6 +50,9 @@ $_['entry_shop_id']               = 'Shop id';
 $_['entry_secret_key']            = 'Secret key';
 $_['entry_status']                = 'Статус';
 $_['entry_export_orders']         = 'Экспорт заказов';
+$_['entry_status_created']        = 'Статус нового заказа';
+$_['entry_status_completed']      = 'Статус завершенного заказа';
+$_['entry_status_cancelled']      = 'Статус отмененного заказа';
 $_['entry_export_subscribers']    = 'Экспорт подписчиков';
 $_['entry_export_type']           = 'Тип экспорта';
 $_['entry_name']                  = 'Название модуля';

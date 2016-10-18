@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']               = 'REES46'; 
+$_['heading_title']               = '<img src="view/image/rees46.png" width="20"> REES46'; 
 
 // Tab
 $_['tab_settings']                = 'Settings';
@@ -41,8 +41,8 @@ $_['text_template_special']       = 'Special';
 $_['text_autocomplete']           = 'Autocomplete';
 $_['text_subscribers']            = 'Newsletter Subscribers';
 $_['text_customers']              = 'All Customers';
-$_['text_info_1']                 = 'Will be exported orders over the past six months.';
-$_['text_info_2']                 = '';
+$_['text_info_1']                 = '<a href="https://rees46.com/customers/sign_up" target="_blank">For use the module need to register on rees46.com!</a>';
+$_['text_info_2']                 = 'Export only once on time initial install module. Will be exported orders over the past six months with selected statuses of above. Please save settings before export!';
 $_['text_info_3']                 = 'Please save settings before export!';
 
 // Entry
@@ -50,6 +50,9 @@ $_['entry_shop_id']               = 'Shop Id';
 $_['entry_secret_key']            = 'Secret Key';
 $_['entry_status']                = 'Status';
 $_['entry_export_orders']         = 'Export Orders';
+$_['entry_status_created']        = 'Created Order Status';
+$_['entry_status_completed']      = 'Completed Order Status';
+$_['entry_status_cancelled']      = 'Cancelled Order Status';
 $_['entry_export_subscribers']    = 'Export Subscribers';
 $_['entry_export_type']           = 'Type Export';
 $_['entry_name']                  = 'Module Name';
