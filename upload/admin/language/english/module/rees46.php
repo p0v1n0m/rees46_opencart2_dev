@@ -53,6 +53,7 @@ $_['text_info_3']                 = 'Please save settings before export!';
 $_['entry_shop_id']               = 'Shop Id';
 $_['entry_secret_key']            = 'Secret Key';
 $_['entry_status']                = 'Status';
+$_['entry_log']                   = 'Logging';
 $_['entry_export_orders']         = 'Export Orders';
 $_['entry_status_created']        = 'Created Order Status';
 $_['entry_status_completed']      = 'Completed Order Status';

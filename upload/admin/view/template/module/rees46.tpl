@@ -67,6 +67,20 @@
 									</select>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-log"><?php echo $entry_log; ?></label>
+								<div class="col-sm-10">
+									<select name="setting[rees46_log]" id="input-log" class="form-control">
+										<?php if ($rees46_log) { ?>
+										<option value="0"><?php echo $text_disabled; ?></option>
+										<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+										<?php } else { ?>
+										<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+										<option value="1"><?php echo $text_enabled; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane" id="tab-orders">
 							<div class="form-group">
@@ -338,7 +352,7 @@
 </div>
 <script type="text/javascript"><!--
 <?php if (isset($module_id)) { ?>
-$('.nav-tabs li:nth-child(4) a').trigger('click');
+$('.nav-tabs li:nth-child(5) a').trigger('click');
 $('#module-<?php echo $module_id; ?> a').trigger('click');
 <?php } else { ?>
 $('.nav-stacked .module:first-child a').trigger('click');

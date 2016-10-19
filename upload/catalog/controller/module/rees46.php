@@ -223,9 +223,17 @@ class ControllerModuleRees46 extends Controller {
 						$params['shop_secret'] = $this->config->get('rees46_secret_key');
 						$params['item_ids'] = $product_id;
 
-						$this->curl($url, json_encode($params, true));
+						$return = $this->curl($url, json_encode($params, true));
 
-						// log: product_id exclude of recomended
+						if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
+							if ($this->config->get('rees46_log')) {
+								$this->log->write('REES46 log: error exclude of recomended product_id = ' . $product_id . ' [' . $return['info']['http_code'] . ']');
+							}
+						} else {
+							if ($this->config->get('rees46_log')) {
+								$this->log->write('REES46 log: success exclude of recomended product_id = ' . $product_id);
+							}
+						}
 					}
 				}
 			}

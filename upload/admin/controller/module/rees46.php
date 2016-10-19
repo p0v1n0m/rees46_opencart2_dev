@@ -82,6 +82,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_shop_id'] = $this->language->get('entry_shop_id');
 		$data['entry_secret_key'] = $this->language->get('entry_secret_key');
 		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_log'] = $this->language->get('entry_log');
 		$data['entry_export_orders'] = $this->language->get('entry_export_orders');
 		$data['entry_status_created'] = $this->language->get('entry_status_created');
 		$data['entry_status_completed'] = $this->language->get('entry_status_completed');
@@ -155,6 +156,12 @@ class ControllerModuleRees46 extends Controller {
 			$data['rees46_tracking_status'] = $this->request->post['rees46_tracking_status'];
 		} else {
 			$data['rees46_tracking_status'] = $this->config->get('rees46_tracking_status');
+		}
+
+		if (isset($this->request->post['rees46_log'])) {
+			$data['rees46_log'] = $this->request->post['rees46_log'];
+		} else {
+			$data['rees46_log'] = $this->config->get('rees46_log');
 		}
 
 		if (isset($this->request->post['rees46_status_created'])) {
@@ -354,7 +361,11 @@ class ControllerModuleRees46 extends Controller {
 				$return = $this->curl($url, json_encode($params, true));
 
 				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
-					$json['error'] = $return['info']['http_code'];
+					$json['error'] = $this->language->get('text_error_export');
+
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: error export ' . $this->request->post['type'] . ' [' . $return['info']['http_code'] . ']');
+					}
 				} else {
 					if ($results_total > $next * $limit) {
 						$json['next'] = $next + 1;
@@ -362,6 +373,10 @@ class ControllerModuleRees46 extends Controller {
 						$json['success'] = sprintf($this->language->get('text_processing_' . $this->request->post['type']), $next * $limit ? $results_total : 0, $results_total);
 					} else {
 						$json['success'] = sprintf($this->language->get('text_success_' . $this->request->post['type']), $results_total, $results_total);
+
+						if ($this->config->get('rees46_log')) {
+							$this->log->write('REES46 log: success export ' . $this->request->post['type'] . ' (' . $results_total . ')');
+						}
 					}
 				}
 			} else {
@@ -420,9 +435,13 @@ class ControllerModuleRees46 extends Controller {
 				$return = $this->curl($url, json_encode($params, true));
 
 				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
-					// error log $return['info']['http_code'] and $order_id
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: error auto export order_id = ' . $order_id . ' [' . $return['info']['http_code'] . ']');
+					}
 				} else {
-					// success log $order_id
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: success auto export order_id = ' . $order_id);
+					}
 				}
 			}
 		}
@@ -455,9 +474,13 @@ class ControllerModuleRees46 extends Controller {
 				$return = $this->curl($url, json_encode($params, true));
 
 				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
-					// error log $return['info']['http_code'] and $order['order_id']
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: error auto export the status of order_id = ' . $order['order_id'] . ' [' . $return['info']['http_code'] . ']');
+					}
 				} else {
-					// success log $order['order_id']
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: success auto export the status of order_id = ' . $order['order_id']);
+					}
 				}
 			}
 		}
@@ -508,11 +531,15 @@ class ControllerModuleRees46 extends Controller {
 					curl_close($ch);
 
 					if ($info['http_code'] < 200 || $info['http_code'] >= 300) {
-						// error log
+						if ($this->config->get('rees46_log')) {
+							$this->log->write('REES46 log: error loading file ' . $file . ' [' . $info['http_code'] . ']');
+						}
 					} else {
 						file_put_contents($dir . $file, $result);
 
-						// success log
+						if ($this->config->get('rees46_log')) {
+							$this->log->write('REES46 log: success loading file ' . $file);
+						}
 					}
 				}
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0
+* Added logging
+
 ## 1.1.1
 * OpenCart code style
 

@@ -53,6 +53,7 @@ $_['text_info_3']                 = 'Пожалуйста, сохраните н
 $_['entry_shop_id']               = 'Shop id';
 $_['entry_secret_key']            = 'Secret key';
 $_['entry_status']                = 'Статус';
+$_['entry_log']                   = 'Логирование';
 $_['entry_export_orders']         = 'Экспорт заказов';
 $_['entry_status_created']        = 'Статус нового заказа';
 $_['entry_status_completed']      = 'Статус завершенного заказа';
