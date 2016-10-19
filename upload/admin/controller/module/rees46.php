@@ -45,12 +45,14 @@ class ControllerModuleRees46 extends Controller {
 		$data['tab_settings'] = $this->language->get('tab_settings');
 		$data['tab_orders'] = $this->language->get('tab_orders');
 		$data['tab_subscribers'] = $this->language->get('tab_subscribers');
+		$data['tab_webpush'] = $this->language->get('tab_webpush');
 		$data['tab_modules'] = $this->language->get('tab_modules');
 		$data['tab_help'] = $this->language->get('tab_help');
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 		$data['button_add'] = $this->language->get('button_add');
 		$data['button_export'] = $this->language->get('button_export');
+		$data['button_check'] = $this->language->get('button_check');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['text_edit'] = $this->language->get('text_edit');
@@ -86,6 +88,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_status_cancelled'] = $this->language->get('entry_status_cancelled');
 		$data['entry_export_subscribers'] = $this->language->get('entry_export_subscribers');
 		$data['entry_export_type'] = $this->language->get('entry_export_type');
+		$data['entry_webpush_files'] = $this->language->get('entry_webpush_files');
 		$data['entry_name'] = $this->language->get('entry_name');
 		$data['entry_title'] = $this->language->get('entry_title');
 		$data['entry_type'] = $this->language->get('entry_type');
@@ -463,7 +466,7 @@ class ControllerModuleRees46 extends Controller {
 	protected function curl($url, $params) {
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
@@ -476,6 +479,55 @@ class ControllerModuleRees46 extends Controller {
 		curl_close($ch);
 
 		return $data;
+	}
+
+	public function checkFiles() {
+		$this->load->language('module/rees46');
+
+		$json = array();
+
+		if ($this->validate()) {
+			$dir = str_replace('\\', '/', realpath(DIR_APPLICATION . '../')) . '/';
+
+			$files = array(
+				'manifest.json',
+				'push_sw.js'
+			);
+
+			foreach ($files as $key => $file) {
+				if (!is_file($dir . $file)) {
+					$ch = curl_init();
+
+					curl_setopt($ch, CURLOPT_URL, 'https://raw.githubusercontent.com/rees46/web-push-files/master/' . $file);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+					$result = curl_exec($ch);
+					$info = curl_getinfo($ch);
+
+					curl_close($ch);
+
+					if ($info['http_code'] < 200 || $info['http_code'] >= 300) {
+						// error log
+					} else {
+						file_put_contents($dir . $file, $result);
+
+						// success log
+					}
+				}
+
+				if (is_file($dir . $file)) {
+					$json['success_loaded'][$key] = sprintf($this->language->get('text_success_check'), $file);
+				} else {
+					$json['error_loaded'][$key] = sprintf($this->language->get('text_error_check'), $file);
+				}
+			}
+		} else {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 
 	protected function validate() {

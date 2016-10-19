@@ -3,14 +3,16 @@
 $_['heading_title']               = '<img src="view/image/rees46.png" width="20"> REES46'; 
 
 // Tab
-$_['tab_settings']                = 'Settings';
+$_['tab_settings']                = 'General';
 $_['tab_orders']                  = 'Orders';
 $_['tab_subscribers']             = 'Subscribers';
+$_['tab_webpush']                 = 'Web Push';
 $_['tab_modules']                 = 'Modules';
 $_['tab_help']                    = 'Help';
 
 // Button
 $_['button_export']               = 'Start Export';
+$_['button_check']                = 'Check Files';
 
 // Text
 $_['text_module']                 = 'Modules';
@@ -20,6 +22,8 @@ $_['text_success_orders']         = 'Success: You have exported <b>%s</b> of <b>
 $_['text_processing_subscribers'] = 'Processing: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
 $_['text_success_subscribers']    = 'Success: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
 $_['text_error_export']           = 'Error: No data for export!';
+$_['text_success_check']          = 'Success: File <b>%s</b> loaded!';
+$_['text_error_check']            = 'Error: You need to load file <b>%s</b>!';
 $_['text_edit']                   = 'Edit Module';
 $_['text_tab_module']             = 'Module';
 $_['text_documentation']          = 'Documentation';
@@ -55,6 +59,7 @@ $_['entry_status_completed']      = 'Completed Order Status';
 $_['entry_status_cancelled']      = 'Cancelled Order Status';
 $_['entry_export_subscribers']    = 'Export Subscribers';
 $_['entry_export_type']           = 'Type Export';
+$_['entry_webpush_files']         = 'Necessary Files';
 $_['entry_name']                  = 'Module Name';
 $_['entry_title']                 = 'Title';
 $_['entry_type']                  = 'Type';

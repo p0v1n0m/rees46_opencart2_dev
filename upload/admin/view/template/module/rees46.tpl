@@ -30,6 +30,7 @@
 						<li class="active"><a href="#tab-settings" data-toggle="tab"><?php echo $tab_settings; ?></a></li>
 						<li><a href="#tab-orders" data-toggle="tab"><?php echo $tab_orders; ?></a></li>
 						<li><a href="#tab-subscribers" data-toggle="tab"><?php echo $tab_subscribers; ?></a></li>
+						<li><a href="#tab-webpush" data-toggle="tab"><?php echo $tab_webpush; ?></a></li>
 						<li><a href="#tab-modules" data-toggle="tab"><?php echo $tab_modules; ?></a></li>
 						<li><a href="#tab-help" data-toggle="tab"><?php echo $tab_help; ?></a></li>
 					</ul>
@@ -156,6 +157,14 @@
 								<div class="col-sm-10">
 									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_3; ?></div>
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><?php echo $button_export; ?></button>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-webpush">
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_webpush_files; ?></label>
+								<div class="col-sm-10">
+									<button type="button" onclick="checkFiles();" class="btn btn-success" id="button-start-check"><?php echo $button_check; ?></button>
 								</div>
 							</div>
 						</div>
@@ -546,6 +555,40 @@ function startExport(type, next = 1) {
 
 			if (json['error']) {
 				$('#tab-' + type).prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+}
+
+function checkFiles() {
+	$.ajax({
+		url: 'index.php?route=module/rees46/checkFiles&token=' + getURLVar('token'),
+		type: 'post',
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-start-check').button('loading');
+		},
+		success: function(json) {
+			$('#tab-webpush .alert-danger, #tab-webpush .alert-success').remove();
+			$('#button-start-check').button('reset');
+
+			if (json['success_loaded']) {
+				$.map(json['success_loaded'], function(success) {
+					$('#button-start-check').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + success + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				});
+			}
+
+			if (json['error_loaded']) {
+				$.map(json['error_loaded'], function(error) {
+					$('#button-start-check').before('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + error + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				});
+			}
+
+			if (json['error']) {
+				$('#tab-webpush').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
