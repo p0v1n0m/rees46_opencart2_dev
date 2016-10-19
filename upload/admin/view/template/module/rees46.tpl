@@ -54,17 +54,17 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label"><?php echo $entry_status; ?></label>
+								<label class="col-sm-2 control-label" for="input-tracking_status"><?php echo $entry_status; ?></label>
 								<div class="col-sm-10">
-									<div class="btn-group" data-toggle="buttons">
+									<select name="setting[rees46_tracking_status]" id="input-tracking_status" class="form-control">
 										<?php if ($rees46_tracking_status) { ?>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_tracking_status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_tracking_status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+										<option value="0"><?php echo $text_disabled; ?></option>
+										<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
 										<?php } else { ?>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_tracking_status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_tracking_status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+										<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+										<option value="1"><?php echo $text_enabled; ?></option>
 										<?php } ?>
-									</div>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -139,17 +139,17 @@
 						</div>
 						<div class="tab-pane" id="tab-subscribers">
 							<div class="form-group">
-								<label class="col-sm-2 control-label"><?php echo $entry_export_type; ?></label>
+								<label class="col-sm-2 control-label" for="input-subscribers"><?php echo $entry_export_type; ?></label>
 								<div class="col-sm-10">
-									<div class="btn-group" data-toggle="buttons">
+									<select name="setting[rees46_subscribers]" id="input-subscribers" class="form-control">
 										<?php if ($rees46_subscribers) { ?>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_subscribers]" value="0" autocomplete="off"><?php echo $text_subscribers; ?></label>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_subscribers]" value="1" autocomplete="off" checked="checked"><?php echo $text_customers; ?></label>
+										<option value="0"><?php echo $text_subscribers; ?></option>
+										<option value="1" selected="selected"><?php echo $text_customers; ?></option>
 										<?php } else { ?>
-										<label class="btn btn-info active"><input type="radio" name="setting[rees46_subscribers]" value="0" autocomplete="off" checked="checked"><?php echo $text_subscribers; ?></label>
-										<label class="btn btn-info"><input type="radio" name="setting[rees46_subscribers]" value="1" autocomplete="off"><?php echo $text_customers; ?></label>
+										<option value="0" selected="selected"><?php echo $text_subscribers; ?></option>
+										<option value="1"><?php echo $text_customers; ?></option>
 										<?php } ?>
-									</div>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -249,29 +249,29 @@
 											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-css<?php echo $module['module_id']; ?>"><?php echo $entry_css; ?></label>
 												<div class="col-sm-10">
-													<div class="btn-group" data-toggle="buttons" id="input-css<?php echo $module['module_id']; ?>">
+													<select name="module[<?php echo $module['module_id']; ?>][css]" id="input-css<?php echo $module['module_id']; ?>" class="form-control">
 														<?php if ($module['setting']['css'] == 1) { ?>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+														<option value="0"><?php echo $text_disabled; ?></option>
+														<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
 														<?php } else { ?>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][css]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+														<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+														<option value="1"><?php echo $text_enabled; ?></option>
 														<?php } ?>
-													</div>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-discount<?php echo $module['module_id']; ?>"><?php echo $entry_discount; ?></label>
 												<div class="col-sm-10">
-													<div class="btn-group" data-toggle="buttons" id="input-discount<?php echo $module['module_id']; ?>">
+													<select name="module[<?php echo $module['module_id']; ?>][discount]" id="input-discount<?php echo $module['module_id']; ?>" class="form-control">
 														<?php if ($module['setting']['discount'] == 1) { ?>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][discount]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][discount]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+														<option value="0"><?php echo $text_disabled; ?></option>
+														<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
 														<?php } else { ?>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][discount]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][discount]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+														<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+														<option value="1"><?php echo $text_enabled; ?></option>
 														<?php } ?>
-													</div>
+													</select>
 												</div>
 											</div>
 											<div class="form-group" id="autocomplete<?php echo $module['module_id']; ?>">
@@ -307,15 +307,15 @@
 											<div class="form-group">
 												<label class="col-sm-2 control-label" for="input-status<?php echo $module['module_id']; ?>"><?php echo $entry_status; ?></label>
 												<div class="col-sm-10">
-													<div class="btn-group" data-toggle="buttons" id="input-status<?php echo $module['module_id']; ?>">
+													<select name="module[<?php echo $module['module_id']; ?>][status]" id="input-status<?php echo $module['module_id']; ?>" class="form-control">
 														<?php if ($module['setting']['status'] == 1) { ?>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+														<option value="0"><?php echo $text_disabled; ?></option>
+														<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
 														<?php } else { ?>
-														<label class="btn btn-info active"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
-														<label class="btn btn-info"><input type="radio" name="module[<?php echo $module['module_id']; ?>][status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+														<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+														<option value="1"><?php echo $text_enabled; ?></option>
 														<?php } ?>
-													</div>
+													</select>
 												</div>
 											</div>
 										</div>
@@ -448,19 +448,19 @@ function addModule() {
 	html += '	<div class="form-group">';
 	html += '		<label class="col-sm-2 control-label" for="input-css' + module_row + '"><?php echo $entry_css; ?></label>';
 	html += '		<div class="col-sm-10">';
-	html += '			<div class="btn-group" data-toggle="buttons" id="input-css' + module_row + '">';
-	html += '				<label class="btn btn-info active"><input type="radio" name="module[' + module_row + '][css]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>';
-	html += '				<label class="btn btn-info"><input type="radio" name="module[' + module_row + '][css]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>';
-	html += '			</div>';
+	html += '			<select name="module[' + module_row + '][css]" id="input-css' + module_row + '" class="form-control">';
+	html += '				<option value="0"><?php echo $text_disabled; ?></option>';
+	html += '				<option value="1"><?php echo $text_enabled; ?></option>';
+	html += '			</select>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group">';
 	html += '		<label class="col-sm-2 control-label" for="input-discount' + module_row + '"><?php echo $entry_discount; ?></label>';
 	html += '		<div class="col-sm-10">';
-	html += '			<div class="btn-group" data-toggle="buttons" id="input-discount' + module_row + '">';
-	html += '				<label class="btn btn-info active"><input type="radio" name="module[' + module_row + '][discount]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>';
-	html += '				<label class="btn btn-info"><input type="radio" name="module[' + module_row + '][discount]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>';
-	html += '			</div>';
+	html += '			<select name="module[' + module_row + '][discount]" id="input-discount' + module_row + '" class="form-control">';
+	html += '				<option value="0"><?php echo $text_disabled; ?></option>';
+	html += '				<option value="1"><?php echo $text_enabled; ?></option>';
+	html += '			</select>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '	<div class="form-group" id="autocomplete' + module_row + '">';
@@ -480,10 +480,10 @@ function addModule() {
 	html += '	<div class="form-group">';
 	html += '		<label class="col-sm-2 control-label" for="input-status' + module_row + '"><?php echo $entry_status; ?></label>';
 	html += '		<div class="col-sm-10">';
-	html += '			<div class="btn-group" data-toggle="buttons" id="input-status' + module_row + '">';
-	html += '				<label class="btn btn-info active"><input type="radio" name="module[' + module_row + '][status]" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>';
-	html += '				<label class="btn btn-info"><input type="radio" name="module[' + module_row + '][status]" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>';
-	html += '			</div>';
+	html += '			<select name="module[' + module_row + '][status]" id="input-status' + module_row + '" class="form-control">';
+	html += '				<option value="0"><?php echo $text_disabled; ?></option>';
+	html += '				<option value="1"><?php echo $text_enabled; ?></option>';
+	html += '			</select>';
 	html += '		</div>';
 	html += '	</div>';
 	html += '</div>';
