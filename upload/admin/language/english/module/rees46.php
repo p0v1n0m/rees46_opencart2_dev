@@ -7,12 +7,14 @@ $_['tab_settings']                = 'General';
 $_['tab_orders']                  = 'Orders';
 $_['tab_subscribers']             = 'Subscribers';
 $_['tab_webpush']                 = 'Web Push';
+$_['tab_xml']                     = 'XML Feed';
 $_['tab_modules']                 = 'Modules';
 $_['tab_help']                    = 'Help';
 
 // Button
 $_['button_export']               = 'Start Export';
 $_['button_check']                = 'Check Files';
+$_['button_generate']             = 'Start Generate';
 
 // Text
 $_['text_module']                 = 'Modules';
@@ -61,6 +63,8 @@ $_['entry_status_cancelled']      = 'Cancelled Order Status';
 $_['entry_export_subscribers']    = 'Export Subscribers';
 $_['entry_export_type']           = 'Type Export';
 $_['entry_webpush_files']         = 'Necessary Files';
+$_['entry_xml_url']               = 'Xml Feed Url';
+$_['entry_xml_generate']          = 'Generate Xml';
 $_['entry_name']                  = 'Module Name';
 $_['entry_title']                 = 'Title';
 $_['entry_type']                  = 'Type';

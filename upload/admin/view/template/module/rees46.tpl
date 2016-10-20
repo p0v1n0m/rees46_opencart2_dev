@@ -31,6 +31,7 @@
 						<li><a href="#tab-orders" data-toggle="tab"><?php echo $tab_orders; ?></a></li>
 						<li><a href="#tab-subscribers" data-toggle="tab"><?php echo $tab_subscribers; ?></a></li>
 						<li><a href="#tab-webpush" data-toggle="tab"><?php echo $tab_webpush; ?></a></li>
+						<li><a href="#tab-xml" data-toggle="tab"><?php echo $tab_xml; ?></a></li>
 						<li><a href="#tab-modules" data-toggle="tab"><?php echo $tab_modules; ?></a></li>
 						<li><a href="#tab-help" data-toggle="tab"><?php echo $tab_help; ?></a></li>
 					</ul>
@@ -38,7 +39,7 @@
 						<div class="tab-pane active" id="tab-settings">
 							<div class="form-group">
 								<div class="col-sm-12">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?></div>
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?><button type="button" class="close" data-dismiss="alert">&times;</button></div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -146,7 +147,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $entry_export_orders; ?></label>
 								<div class="col-sm-10">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?></div>
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_2; ?><button type="button" class="close" data-dismiss="alert">&times;</button></div>
 									<button type="button" onclick="startExport('orders');" class="btn btn-success" id="button-start-orders"><?php echo $button_export; ?></button>
 								</div>
 							</div>
@@ -169,7 +170,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $entry_export_subscribers; ?></label>
 								<div class="col-sm-10">
-									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_3; ?></div>
+									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_3; ?><button type="button" class="close" data-dismiss="alert">&times;</button></div>
 									<button type="button" onclick="startExport('subscribers');" class="btn btn-success" id="button-start-subscribers"><?php echo $button_export; ?></button>
 								</div>
 							</div>
@@ -179,6 +180,34 @@
 								<label class="col-sm-2 control-label"><?php echo $entry_webpush_files; ?></label>
 								<div class="col-sm-10">
 									<button type="button" onclick="checkFiles();" class="btn btn-success" id="button-start-check"><?php echo $button_check; ?></button>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-xml">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-xml"><?php echo $entry_status; ?></label>
+								<div class="col-sm-10">
+									<select name="setting[rees46_xml]" id="input-xml" class="form-control">
+										<?php if ($rees46_xml) { ?>
+										<option value="0"><?php echo $text_disabled; ?></option>
+										<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+										<?php } else { ?>
+										<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+										<option value="1"><?php echo $text_enabled; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-xml_url"><?php echo $entry_xml_url; ?></label>
+								<div class="col-sm-10">
+									<input type="text" value="<?php echo $xml_url; ?>" id="input-xml_url" class="form-control" readonly />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $entry_xml_generate; ?></label>
+								<div class="col-sm-10">
+									<button type="button" onclick="startGenerate();" class="btn btn-success" id="button-start-generate"><?php echo $button_generate; ?></button>
 								</div>
 							</div>
 						</div>
@@ -352,7 +381,7 @@
 </div>
 <script type="text/javascript"><!--
 <?php if (isset($module_id)) { ?>
-$('.nav-tabs li:nth-child(5) a').trigger('click');
+$('.nav-tabs li:nth-child(6) a').trigger('click');
 $('#module-<?php echo $module_id; ?> a').trigger('click');
 <?php } else { ?>
 $('.nav-stacked .module:first-child a').trigger('click');
@@ -603,6 +632,38 @@ function checkFiles() {
 
 			if (json['error']) {
 				$('#tab-webpush').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+}
+
+function startGenerate(type = 'shop', next = 0) {
+	$.ajax({
+		url: 'index.php?route=module/rees46/generate' + type + '&token=' + getURLVar('token'),
+		type: 'post',
+		data: 'type=' + type + '&next=' + next,
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-start-generate').button('loading');
+		},
+		success: function(json) {
+			$('.alert-danger, .alert-success').remove();
+
+			if (json['success']) {
+				$('#tab-xml').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+
+			if (json['type'] && json['next']) {
+				startGenerate(json['type'], json['next']);
+			} else {
+				$('#button-start-generate').button('reset');
+			}
+
+			if (json['error']) {
+				$('#tab-xml').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 			}
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
