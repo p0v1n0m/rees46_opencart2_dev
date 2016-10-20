@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.2
+* Added categories to generator
+
 ## 1.3.1
 * Translations and log for xml
 

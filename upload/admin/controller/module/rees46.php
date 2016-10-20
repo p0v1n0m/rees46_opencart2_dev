@@ -679,40 +679,113 @@ class ControllerModuleRees46 extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	/*public function generateCategories() {
+	public function generateCategories() {
 		$this->load->language('module/rees46');
+
+		$this->load->model('module/rees46');
 
 		$json = array();
 
 		if ($this->validate() && isset($this->request->post['type']) && isset($this->request->post['next'])) {
-			$xml = '    <categories>';
+			$categories = $this->model_module_rees46->getAllCategories();
 
-			foreach ($this->model_localisation_currency->getCurrencies() as $category) {
-				$xml .= "\n" . '      <category id="2" parentId="1">Детективы</category>';
-			}
+			if (!empty($categories)) {
+				$xml = '    <categories>';
 
-			$xml .= "\n" . '    </categories>' . "\n";
+				foreach ($categories as $category) {
+					if ($category['parent_id']) {
+						$parent = ' parentId="' . $category['parent_id'] . '"';
+					} else {
+						$parent = '';
+					}
 
-			$xml_url = DIR_DOWNLOAD . 'rees46.xml';
-
-			if (!$fp = fopen($xml_url, 'a')) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: xml file not opened [ERROR]');
+					$xml .= "\n" . '      <category id="' . $category['category_id'] . '"' . $parent . '>' . $this->replacer($category['name']) . '</category>';
 				}
-			} elseif (fwrite($fp, $xml) === false) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: xml file not writable [ERROR]');
+
+				$xml .= "\n" . '    </categories>' . "\n";
+
+				$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+
+				if (!$fp = fopen($xml_url, 'a')) {
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not opened [ERROR]');
+					}
+				} elseif (fwrite($fp, $xml) === false) {
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not writable [ERROR]');
+					}
 				}
-			}
 
-			fclose($fp);
+				fclose($fp);
 
-			if (is_file($xml_url)) {
-				$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
-				$json['type'] = 'offers';
-				$json['next'] = '0';
+				if (is_file($xml_url)) {
+					$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
+					$json['type'] = 'offers';
+					$json['next'] = '0';
+				} else {
+					$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
+				}
 			} else {
-				$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
+				$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
+			}
+		} else {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	/*public function generateOffers() {
+		$this->load->language('module/rees46');
+
+		$this->load->model('module/rees46');
+
+		$json = array();
+
+		if ($this->validate() && isset($this->request->post['type']) && isset($this->request->post['next'])) {
+			$categories = $this->model_module_rees46->getAllCategories();
+
+			if (!empty($products)) {
+				$xml = '    <offers>';
+
+				foreach ($products as $product) {
+					if ($category['parent_id']) {
+						$parent = ' parentId="' . $category['parent_id'] . '"';
+					} else {
+						$parent = '';
+					}
+
+					$xml .= "\n" . '      <offer id="' . $category['category_id'] . '"' . $parent . '>' . $category['name'] . '</offer>';
+				}
+
+				$xml .= "\n" . '    </offers>' . "\n";
+				$xml .= '  </shop>' . "\n";
+				$xml .= '</yml_catalog>';
+
+				$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+
+				if (!$fp = fopen($xml_url, 'a')) {
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not opened [ERROR]');
+					}
+				} elseif (fwrite($fp, $xml) === false) {
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not writable [ERROR]');
+					}
+				}
+
+				fclose($fp);
+
+				if (is_file($xml_url)) {
+					$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
+					$json['type'] = 'offers';
+					$json['next'] = '0';
+				} else {
+					$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
+				}
+			} else {
+				$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
 			}
 		} else {
 			$json['error'] = $this->language->get('error_permission');
@@ -722,13 +795,9 @@ class ControllerModuleRees46 extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}*/
 
-	/*public function generateOffers() {
-			$xml .= '    <offers>' . "\n";
-
-			$xml .= '    </offers>' . "\n";
-			$xml .= '  </shop>' . "\n";
-			$xml .= '</yml_catalog>' . "\n";
-	}*/
+	protected function replacer($str) {
+		return trim(str_replace('&#039;', '&apos;', htmlspecialchars(htmlspecialchars_decode($str, ENT_QUOTES), ENT_QUOTES)));
+	}
 
 	protected function validate() {
 		if (!$this->user->hasPermission('modify', 'module/rees46')) {
