@@ -57,6 +57,7 @@ $_['text_customers']              = 'All Customers';
 $_['text_info_1']                 = '<a href="https://rees46.com/customers/sign_up?locale=en" target="_blank">For use the module need to register on rees46.com!</a>';
 $_['text_info_2']                 = 'Export only once on time initial install module. Will be exported orders over the past six months with selected statuses of above. Please save settings before export!';
 $_['text_info_3']                 = 'Please save settings before export!';
+$_['text_info_4']                 = 'Generate XML file, then specify url to it in account rees46.';
 
 // Entry
 $_['entry_shop_id']               = 'Shop Id';
@@ -70,8 +71,8 @@ $_['entry_status_cancelled']      = 'Cancelled Order Status';
 $_['entry_export_subscribers']    = 'Export Subscribers';
 $_['entry_export_type']           = 'Type Export';
 $_['entry_webpush_files']         = 'Necessary Files';
-$_['entry_xml_url']               = 'Xml Feed Url';
-$_['entry_xml_generate']          = 'Generate Xml';
+$_['entry_xml_url']               = 'XML Feed Url';
+$_['entry_xml_generate']          = 'Generate XML';
 $_['entry_name']                  = 'Module Name';
 $_['entry_title']                 = 'Title';
 $_['entry_type']                  = 'Type';

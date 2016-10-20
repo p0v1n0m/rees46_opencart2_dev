@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.3
+* Added products to generator
+
 ## 1.3.2
 * Added categories to generator
 
