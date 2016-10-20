@@ -598,9 +598,13 @@ class ControllerModuleRees46 extends Controller {
 			$xml_url = DIR_DOWNLOAD . 'rees46.xml';
 
 			if (!$fp = fopen($xml_url, 'w')) {
-				$this->log->write('xml file not opened');
+				if ($this->config->get('rees46_log')) {
+					$this->log->write('REES46 log: xml file not opened [ERROR]');
+				}
 			} elseif (fwrite($fp, $xml) === false) {
-				$this->log->write('xml file not writable');
+				if ($this->config->get('rees46_log')) {
+					$this->log->write('REES46 log: xml file not writable [ERROR]');
+				}
 			}
 
 			fclose($fp);
@@ -646,9 +650,13 @@ class ControllerModuleRees46 extends Controller {
 				$xml_url = DIR_DOWNLOAD . 'rees46.xml';
 
 				if (!$fp = fopen($xml_url, 'a')) {
-					$this->log->write('xml file not opened');
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not opened [ERROR]');
+					}
 				} elseif (fwrite($fp, $xml) === false) {
-					$this->log->write('xml file not writable');
+					if ($this->config->get('rees46_log')) {
+						$this->log->write('REES46 log: xml file not writable [ERROR]');
+					}
 				}
 
 				fclose($fp);
@@ -661,7 +669,7 @@ class ControllerModuleRees46 extends Controller {
 					$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
 				}
 			} else {
-				$json['error'] = 'Недопустимый код основной валюты!';
+				$json['error'] = $this->language->get('text_error_currency_code');
 			}
 		} else {
 			$json['error'] = $this->language->get('error_permission');
@@ -671,7 +679,7 @@ class ControllerModuleRees46 extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	public function generateCategories() {
+	/*public function generateCategories() {
 		$this->load->language('module/rees46');
 
 		$json = array();
@@ -688,9 +696,13 @@ class ControllerModuleRees46 extends Controller {
 			$xml_url = DIR_DOWNLOAD . 'rees46.xml';
 
 			if (!$fp = fopen($xml_url, 'a')) {
-				$this->log->write('xml file not opened');
+				if ($this->config->get('rees46_log')) {
+					$this->log->write('REES46 log: xml file not opened [ERROR]');
+				}
 			} elseif (fwrite($fp, $xml) === false) {
-				$this->log->write('xml file not writable');
+				if ($this->config->get('rees46_log')) {
+					$this->log->write('REES46 log: xml file not writable [ERROR]');
+				}
 			}
 
 			fclose($fp);
@@ -708,7 +720,7 @@ class ControllerModuleRees46 extends Controller {
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
-	}
+	}*/
 
 	/*public function generateOffers() {
 			$xml .= '    <offers>' . "\n";

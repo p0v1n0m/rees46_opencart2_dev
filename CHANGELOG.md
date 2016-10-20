@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+* Translations and log for xml
+
 ## 1.3.0
 * Added xml feed generator (alpha)
 
