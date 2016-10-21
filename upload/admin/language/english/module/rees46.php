@@ -4,10 +4,10 @@ $_['heading_title']               = '<img src="view/image/rees46.png" width="20"
 
 // Tab
 $_['tab_settings']                = 'General';
+$_['tab_xml']                     = 'Products';
 $_['tab_orders']                  = 'Orders';
 $_['tab_subscribers']             = 'Subscribers';
 $_['tab_webpush']                 = 'Web Push';
-$_['tab_xml']                     = 'XML Feed';
 $_['tab_modules']                 = 'Modules';
 $_['tab_help']                    = 'Help';
 
@@ -26,15 +26,15 @@ $_['text_success_subscribers']    = 'Success: You have exported <b>%s</b> of <b>
 $_['text_error_export']           = 'Error: No data for export!';
 $_['text_success_check']          = 'Success: File <b>%s</b> loaded!';
 $_['text_error_check']            = 'Error: You need to load file <b>%s</b>!';
-$_['text_success_shop']           = 'Success: Information about store is recorded in the xml file!';
-$_['text_error_shop']             = 'Error: Information about store is not recorded in the xml file!';
-$_['text_success_currencies']     = 'Success: Information about currencies is recorded in the xml file!';
-$_['text_error_currencies']       = 'Error: Information about currencies is not recorded in the xml file!';
+$_['text_success_shop']           = 'Success: Information about store is recorded in the XML file!';
+$_['text_error_shop']             = 'Error: Information about store is not recorded in the XML file!';
+$_['text_success_currencies']     = 'Success: Information about currencies is recorded in the XML file!';
+$_['text_error_currencies']       = 'Error: Information about currencies is not recorded in the XML file!';
 $_['text_error_currency_code']    = 'Error: Invalid code default currency!';
-$_['text_success_categories']     = 'Success: Information about categories is recorded in the xml file!';
-$_['text_error_categories']       = 'Error: Information about categories is not recorded in the xml file!';
-$_['text_success_offers']         = 'Success: Information about product <b>[%s]</b> is recorded in the xml file!';
-$_['text_error_offers']           = 'Error: Information about product <b>[%s]</b> is not recorded in the xml file!';
+$_['text_success_categories']     = 'Success: Information about categories is recorded in the XML file!';
+$_['text_error_categories']       = 'Error: Information about categories is not recorded in the XML file!';
+$_['text_success_offers']         = 'Success: Information about product <b>[%s]</b> is recorded in the XML file!';
+$_['text_error_offers']           = 'Error: Information about product <b>[%s]</b> is not recorded in the XML file!';
 $_['text_success_xml']            = 'Success: You have generated XML file!';
 $_['text_edit']                   = 'Edit Module';
 $_['text_tab_module']             = 'Module';
@@ -60,7 +60,7 @@ $_['text_customers']              = 'All Customers';
 $_['text_info_1']                 = '<a href="https://rees46.com/customers/sign_up?locale=en" target="_blank">For use the module need to register on rees46.com!</a>';
 $_['text_info_2']                 = 'Export only once on time initial install module. Will be exported orders over the past six months with selected statuses of above. Please save settings before export!';
 $_['text_info_3']                 = 'Please save settings before export!';
-$_['text_info_4']                 = 'Generate XML file, then specify url to it in account rees46. Please save settings before generate!';
+$_['text_info_4']                 = 'Generate XML feed, then specify url to it in account rees46. Please save settings before export!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop Id';
@@ -74,10 +74,10 @@ $_['entry_status_cancelled']      = 'Cancelled Order Status';
 $_['entry_export_subscribers']    = 'Export Subscribers';
 $_['entry_export_type']           = 'Type Export';
 $_['entry_webpush_files']         = 'Necessary Files';
-$_['entry_xml_status']            = 'Status XML';
-$_['entry_xml_currency']          = 'Currency Products in XML';
-$_['entry_xml_generate']          = 'Generate XML';
-$_['entry_xml_url']               = 'XML Url';
+$_['entry_xml_status']            = 'Status XML Feed';
+$_['entry_xml_currency']          = 'Currency Products in XML Feed';
+$_['entry_xml_generate']          = 'Generate XML Feed';
+$_['entry_xml_url']               = 'Url XML Feed';
 $_['entry_name']                  = 'Module Name';
 $_['entry_title']                 = 'Title';
 $_['entry_type']                  = 'Type';

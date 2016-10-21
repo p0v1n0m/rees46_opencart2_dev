@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+* Removal xml if status disabled
+* Edit translation
+
 ## 1.4.1
 * Correction admin translations
 

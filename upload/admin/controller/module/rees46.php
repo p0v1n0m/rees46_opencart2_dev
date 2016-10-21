@@ -36,6 +36,10 @@ class ControllerModuleRees46 extends Controller {
 				}
 			}
 
+			if ($this->request->post['setting']['rees46_xml_status'] == 0 && is_file(DIR_DOWNLOAD . $this->xml_name)) {
+				unlink(DIR_DOWNLOAD . $this->xml_name);
+			}
+
 			$this->model_setting_setting->editSetting('rees46', $this->request->post['setting']);
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -45,10 +49,10 @@ class ControllerModuleRees46 extends Controller {
 
 		$data['heading_title'] = $this->language->get('heading_title');
 		$data['tab_settings'] = $this->language->get('tab_settings');
+		$data['tab_xml'] = $this->language->get('tab_xml');
 		$data['tab_orders'] = $this->language->get('tab_orders');
 		$data['tab_subscribers'] = $this->language->get('tab_subscribers');
 		$data['tab_webpush'] = $this->language->get('tab_webpush');
-		$data['tab_xml'] = $this->language->get('tab_xml');
 		$data['tab_modules'] = $this->language->get('tab_modules');
 		$data['tab_help'] = $this->language->get('tab_help');
 		$data['button_save'] = $this->language->get('button_save');
@@ -592,7 +596,7 @@ class ControllerModuleRees46 extends Controller {
 
 		$json = array();
 
-		if ($this->validate() && isset($this->request->post['type']) && isset($this->request->post['next'])) {
+		if ($this->validate() && isset($this->request->post['type']) && isset($this->request->post['next']) && $this->config->get('rees46_xml_status')) {
 			if ($this->request->server['HTTPS']) {
 				$url = HTTPS_CATALOG;
 			} else {
