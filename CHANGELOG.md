@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.1
+* Correction admin translations
+
 ## 1.4.0
 * Fixed and decoded product urls in xml
 * Fixed description according to the recommendations yml

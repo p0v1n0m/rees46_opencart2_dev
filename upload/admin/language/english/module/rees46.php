@@ -60,7 +60,7 @@ $_['text_customers']              = 'All Customers';
 $_['text_info_1']                 = '<a href="https://rees46.com/customers/sign_up?locale=en" target="_blank">For use the module need to register on rees46.com!</a>';
 $_['text_info_2']                 = 'Export only once on time initial install module. Will be exported orders over the past six months with selected statuses of above. Please save settings before export!';
 $_['text_info_3']                 = 'Please save settings before export!';
-$_['text_info_4']                 = 'Generate XML file, then specify url to it in account rees46. Please save settings before export!';
+$_['text_info_4']                 = 'Generate XML file, then specify url to it in account rees46. Please save settings before generate!';
 
 // Entry
 $_['entry_shop_id']               = 'Shop Id';
