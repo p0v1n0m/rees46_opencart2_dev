@@ -1,6 +1,7 @@
 <?php
 class ControllerModuleRees46 extends Controller {
 	private $error = array();
+	private $xml_name = 'rees46.xml';
 
 	public function index() {
 		$this->load->language('module/rees46');
@@ -10,6 +11,7 @@ class ControllerModuleRees46 extends Controller {
 		$this->load->model('catalog/manufacturer');
 		$this->load->model('localisation/language');
 		$this->load->model('localisation/order_status');
+		$this->load->model('localisation/currency');
 
 		$this->document->setTitle(strip_tags($this->language->get('heading_title')));
 
@@ -93,8 +95,10 @@ class ControllerModuleRees46 extends Controller {
 		$data['entry_export_subscribers'] = $this->language->get('entry_export_subscribers');
 		$data['entry_export_type'] = $this->language->get('entry_export_type');
 		$data['entry_webpush_files'] = $this->language->get('entry_webpush_files');
-		$data['entry_xml_url'] = $this->language->get('entry_xml_url');
+		$data['entry_xml_status'] = $this->language->get('entry_xml_status');
+		$data['entry_xml_currency'] = $this->language->get('entry_xml_currency');
 		$data['entry_xml_generate'] = $this->language->get('entry_xml_generate');
+		$data['entry_xml_url'] = $this->language->get('entry_xml_url');
 		$data['entry_name'] = $this->language->get('entry_name');
 		$data['entry_title'] = $this->language->get('entry_title');
 		$data['entry_type'] = $this->language->get('entry_type');
@@ -199,10 +203,18 @@ class ControllerModuleRees46 extends Controller {
 			$data['rees46_subscribers'] = $this->config->get('rees46_subscribers');
 		}
 
-		if (isset($this->request->post['rees46_xml'])) {
-			$data['rees46_xml'] = $this->request->post['rees46_xml'];
+		if (isset($this->request->post['rees46_xml_status'])) {
+			$data['rees46_xml_status'] = $this->request->post['rees46_xml_status'];
 		} else {
-			$data['rees46_xml'] = $this->config->get('rees46_xml');
+			$data['rees46_xml_status'] = $this->config->get('rees46_xml_status');
+		}
+
+		if (isset($this->request->post['rees46_xml_currency'])) {
+			$data['rees46_xml_currency'] = $this->request->post['rees46_xml_currency'];
+		} elseif ($this->config->get('rees46_xml_currency')) {
+			$data['rees46_xml_currency'] = $this->config->get('rees46_xml_currency');
+		} else {
+			$data['rees46_xml_currency'] = array();
 		}
 
 		if (isset($this->request->get['module_id'])) {
@@ -276,6 +288,7 @@ class ControllerModuleRees46 extends Controller {
 		$data['token'] = $this->session->data['token'];
 		$data['languages'] = $this->model_localisation_language->getLanguages();
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+		$data['currencies'] = $this->model_localisation_currency->getCurrencies();
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -521,7 +534,7 @@ class ControllerModuleRees46 extends Controller {
 		return $data;
 	}
 
-	public function checkFiles() {
+	public function startCheck() {
 		$this->load->language('module/rees46');
 
 		$json = array();
@@ -596,21 +609,9 @@ class ControllerModuleRees46 extends Controller {
 			$xml .= '    <platform>OpenCart</platform>' . "\n";
 			$xml .= '    <version>' . VERSION . '</version>' . "\n";
 
-			$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+			$this->recorder($xml, 'w');
 
-			if (!$fp = fopen($xml_url, 'w')) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: Could not open xml file [ERROR]');
-				}
-			} elseif (fwrite($fp, $xml) === false) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: XML file not writable [ERROR]');
-				}
-			}
-
-			fclose($fp);
-
-			if (is_file($xml_url)) {
+			if (is_file(DIR_DOWNLOAD . $this->xml_name)) {
 				$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
 				$json['type'] = 'currencies';
 				$json['next'] = '0';
@@ -642,27 +643,15 @@ class ControllerModuleRees46 extends Controller {
 
 				foreach ($this->model_localisation_currency->getCurrencies() as $currency) {
 					if ($currency['code'] != $this->config->get('config_currency') && $currency['status'] == 1 && in_array($currency['code'], $allowed_currencies)) {
-						$xml .= "\n" . '      <currency id="' . $currency['code'] . '" rate="' . number_format($currency['value'], 5, '.', '') . '"/>';
+						$xml .= "\n" . '      <currency id="' . $currency['code'] . '" rate="' . number_format(1 / $currency['value'], 4, '.', '') . '"/>';
 					}
 				}
 
 				$xml .= "\n" . '    </currencies>' . "\n";
 
-				$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+				$this->recorder($xml, 'a');
 
-				if (!$fp = fopen($xml_url, 'a')) {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: Could not open xml file [ERROR]');
-					}
-				} elseif (fwrite($fp, $xml) === false) {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: XML file not writable [ERROR]');
-					}
-				}
-
-				fclose($fp);
-
-				if (is_file($xml_url)) {
+				if (is_file(DIR_DOWNLOAD . $this->xml_name)) {
 					$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
 					$json['type'] = 'categories';
 					$json['next'] = '0';
@@ -705,21 +694,9 @@ class ControllerModuleRees46 extends Controller {
 
 				$xml .= "\n" . '    </categories>' . "\n";
 
-				$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+				$this->recorder($xml, 'a');
 
-				if (!$fp = fopen($xml_url, 'a')) {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: Could not open xml file [ERROR]');
-					}
-				} elseif (fwrite($fp, $xml) === false) {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: XML file not writable [ERROR]');
-					}
-				}
-
-				fclose($fp);
-
-				if (is_file($xml_url)) {
+				if (is_file(DIR_DOWNLOAD . $this->xml_name)) {
 					$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
 					$json['type'] = 'offers';
 					$json['next'] = '0';
@@ -760,16 +737,21 @@ class ControllerModuleRees46 extends Controller {
 				$json['next'] = $product['product_id'];
 
 				$xml .= '      <offer id="' . $product['product_id'] . '" available="' . ($product['quantity'] > 0 ? 'true' : 'false') . '">' . "\n";
-				$xml .= '        <url>' . $this->url->link('product/product', 'product_id=' . $product['product_id']) . '</url>' . "\n";
 
-				if ($product['special'] && $product['price'] > $product['special']) {
-					$xml .= '        <price>' . number_format($product['special'], 0, '.', '') . '</price>' . "\n";
-					$xml .= '        <oldprice>' . number_format($product['price'], 0, '.', '') . '</oldprice>' . "\n";
+				if ($this->request->server['HTTPS']) {
+					$xml .= '        <url>' . htmlspecialchars_decode(HTTPS_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
 				} else {
-					$xml .= '        <price>' . number_format($product['price'], 0, '.', '') . '</price>' . "\n";
+					$xml .= '        <url>' . htmlspecialchars_decode(HTTP_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
 				}
 
-				$xml .= '        <currencyId>' . $this->config->get('config_currency') . '</currencyId>' . "\n";
+				if ($product['special'] && $product['price'] > $product['special']) {
+					$xml .= '        <price>' . number_format($this->currency->convert($product['special'], $this->config->get('config_currency'), $this->config->get('rees46_xml_currency')), 2, '.', '') . '</price>' . "\n";
+					$xml .= '        <oldprice>' . number_format($this->currency->convert($product['price'], $this->config->get('config_currency'), $this->config->get('rees46_xml_currency')), 2, '.', '') . '</oldprice>' . "\n";
+				} else {
+					$xml .= '        <price>' . number_format($this->currency->convert($product['price'], $this->config->get('config_currency'), $this->config->get('rees46_xml_currency')), 2, '.', '') . '</price>' . "\n";
+				}
+
+				$xml .= '        <currencyId>' . $this->config->get('rees46_xml_currency') . '</currencyId>' . "\n";
 
 				$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
 
@@ -786,7 +768,7 @@ class ControllerModuleRees46 extends Controller {
 				$xml .= '        <name>' . $this->replacer($product['name']) . '</name>' . "\n";
 				$xml .= '        <vendor>' . $this->replacer($product['manufacturer']) . '</vendor>' . "\n";
 				$xml .= '        <model>' . $this->replacer($product['model']) . '</model>' . "\n";
-				$xml .= '        <description><![CDATA[' . $this->replacer($product['description']) . ']]></description>' . "\n";
+				$xml .= '        <description><![CDATA[' . strip_tags(htmlspecialchars_decode($product['description']), '<h3>, <ul>, <li>, <p>, <br>') . ']]></description>' . "\n";
 				$xml .= '      </offer>' . "\n";
 			} else {
 				$xml .= '    </offers>' . "\n";
@@ -794,24 +776,16 @@ class ControllerModuleRees46 extends Controller {
 				$xml .= '</yml_catalog>';
 			}
 
-			$xml_url = DIR_DOWNLOAD . 'rees46.xml';
+			$this->recorder($xml, 'a');
 
-			if (!$fp = fopen($xml_url, 'a')) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: Could not open xml file [ERROR]');
+			if (is_file(DIR_DOWNLOAD . $this->xml_name)) {
+				if (!empty($product)) {
+					$json['success'] = sprintf($this->language->get('text_success_' . $this->request->post['type']), $product['product_id']);
+				} else {
+					$json['success'] = $this->language->get('text_success_xml');
 				}
-			} elseif (fwrite($fp, $xml) === false) {
-				if ($this->config->get('rees46_log')) {
-					$this->log->write('REES46 log: XML file not writable [ERROR]');
-				}
-			}
-
-			fclose($fp);
-
-			if (is_file($xml_url)) {
-				$json['success'] = $this->language->get('text_success_' . $this->request->post['type']);
 			} else {
-				$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
+				$json['error'] = sprintf($this->language->get('text_error_' . $this->request->post['type']), $product['product_id']);
 			}
 		} else {
 			$json['error'] = $this->language->get('error_permission');
@@ -823,6 +797,20 @@ class ControllerModuleRees46 extends Controller {
 
 	protected function replacer($str) {
 		return trim(str_replace('&#039;', '&apos;', htmlspecialchars(htmlspecialchars_decode($str, ENT_QUOTES), ENT_QUOTES)));
+	}
+
+	protected function recorder($xml, $mode) {
+		if (!$fp = fopen(DIR_DOWNLOAD . $this->xml_name, $mode)) {
+			if ($this->config->get('rees46_log')) {
+				$this->log->write('REES46 log: Could not open xml file [ERROR]');
+			}
+		} elseif (fwrite($fp, $xml) === false) {
+			if ($this->config->get('rees46_log')) {
+				$this->log->write('REES46 log: XML file not writable [ERROR]');
+			}
+		}
+
+		fclose($fp);
 	}
 
 	protected function validate() {

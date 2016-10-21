@@ -179,21 +179,35 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $entry_webpush_files; ?></label>
 								<div class="col-sm-10">
-									<button type="button" onclick="checkFiles();" class="btn btn-success" id="button-start-check"><?php echo $button_check; ?></button>
+									<button type="button" onclick="startCheck();" class="btn btn-success" id="button-start-check"><?php echo $button_check; ?></button>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-xml">
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="input-xml"><?php echo $entry_status; ?></label>
+								<label class="col-sm-2 control-label" for="input-xml_status"><?php echo $entry_xml_status; ?></label>
 								<div class="col-sm-10">
-									<select name="setting[rees46_xml]" id="input-xml" class="form-control">
-										<?php if ($rees46_xml) { ?>
+									<select name="setting[rees46_xml_status]" id="input-xml_status" class="form-control">
+										<?php if ($rees46_xml_status) { ?>
 										<option value="0"><?php echo $text_disabled; ?></option>
 										<option value="1" selected="selected"><?php echo $text_enabled; ?></option>
 										<?php } else { ?>
 										<option value="0" selected="selected"><?php echo $text_disabled; ?></option>
 										<option value="1"><?php echo $text_enabled; ?></option>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-xml_currency"><?php echo $entry_xml_currency; ?></label>
+								<div class="col-sm-10">
+									<select name="setting[rees46_xml_currency]" id="input-xml_currency" class="form-control">
+										<?php foreach ($currencies as $currency) { ?>
+										<?php if ($currency['code'] == $rees46_xml_currency) { ?>
+										<option value="<?php echo $currency['code']; ?>" selected="selected"><?php echo $currency['title']; ?></option>
+										<?php } else { ?>
+										<option value="<?php echo $currency['code']; ?>"><?php echo $currency['title']; ?></option>
+										<?php } ?>
 										<?php } ?>
 									</select>
 								</div>
@@ -607,9 +621,9 @@ function startExport(type, next = 1) {
 	});
 }
 
-function checkFiles() {
+function startCheck() {
 	$.ajax({
-		url: 'index.php?route=module/rees46/checkFiles&token=' + getURLVar('token'),
+		url: 'index.php?route=module/rees46/startCheck&token=' + getURLVar('token'),
 		type: 'post',
 		dataType: 'json',
 		beforeSend: function() {

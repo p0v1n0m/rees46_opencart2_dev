@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.0
+* Fixed and decoded product urls in xml
+* Fixed description according to the recommendations yml
+* Added translate for generation process
+* Fixed calculation of product prices and currency rate
+* Added setting currency for product prices in xml
+
 ## 1.3.3
 * Added products to generator
 
