@@ -290,9 +290,19 @@ class ControllerModuleRees46 extends Controller {
 		}
 
 		$data['token'] = $this->session->data['token'];
-		$data['languages'] = $this->model_localisation_language->getLanguages();
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
 		$data['currencies'] = $this->model_localisation_currency->getCurrencies();
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+
+		if (version_compare(VERSION, '2.2', '>=')) {
+			foreach ($data['languages'] as $key => $language) {
+				$data['languages'][$key]['image'] = 'language/' . $language['code'] . '/' . $language['code'] . '.png';
+			}
+		} else {
+			foreach ($data['languages'] as $key => $language) {
+				$data['languages'][$key]['image'] = 'view/image/flags/' . $language['image'];
+			}
+		}
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -549,7 +559,7 @@ class ControllerModuleRees46 extends Controller {
 			$allowed_currencies = array('RUR', 'RUB', 'UAH', 'BYN', 'KZT', 'USD', 'EUR');
 			$main_currencies = array('RUR', 'RUB', 'UAH', 'BYN', 'KZT');
 
-			if (in_array($this->config->get('config_currency'), $main_currencies)) {
+			//if (in_array($this->config->get('config_currency'), $main_currencies)) {
 				$xml = '    <currencies>';
 				$xml .= "\n" . '      <currency id="' . $this->config->get('config_currency') . '" rate="1"/>';
 
@@ -570,9 +580,9 @@ class ControllerModuleRees46 extends Controller {
 				} else {
 					$json['error'] = $this->language->get('text_error_' . $this->request->post['type']);
 				}
-			} else {
-				$json['error'] = $this->language->get('text_error_currency_code');
-			}
+			//} else {
+			//	$json['error'] = $this->language->get('text_error_currency_code');
+			//}
 		} else {
 			$json['error'] = $this->language->get('error_permission');
 		}
@@ -740,8 +750,13 @@ class ControllerModuleRees46 extends Controller {
 	public function install() {
 		$this->load->model('extension/event');
 
-		$this->model_extension_event->addEvent('rees46', 'post.order.add', 'module/rees46/exportOrder');
-		$this->model_extension_event->addEvent('rees46', 'pre.order.history.add', 'module/rees46/exportStatus');
+		if (version_compare(VERSION, '2.2', '>=')) {
+			$this->model_extension_event->addEvent('rees46', 'catalog/model/checkout/order/addOrder/after', 'module/rees46/exportOrder');
+			$this->model_extension_event->addEvent('rees46', 'catalog/model/checkout/order/addOrderHistory/before', 'module/rees46/exportStatus');
+		} else {
+			$this->model_extension_event->addEvent('rees46', 'post.order.add', 'module/rees46/exportOrder');
+			$this->model_extension_event->addEvent('rees46', 'pre.order.history.add', 'module/rees46/exportStatus');
+		}
 	}
 
 	public function uninstall() {

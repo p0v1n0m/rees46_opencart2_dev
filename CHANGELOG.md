@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.0
+* Compatibility with opencart 2.2
+
 ## 1.5.0
 * Redone the order tracking
 

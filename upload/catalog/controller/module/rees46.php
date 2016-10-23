@@ -248,73 +248,84 @@ class ControllerModuleRees46 extends Controller {
 		}
 	}
 
-	public function exportOrder($order_id) {
-		$this->load->model('module/rees46');
-
-		$result = $this->model_module_rees46->getOrder($order_id);
-
-		if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
-			$order_products = array();
-
-			$products = $this->model_module_rees46->getOrderProducts($order_id);
-
-			foreach ($products as $product) {
-				$categories = array();
-
-				$categories = $this->model_module_rees46->getProductCategories($product['product_id']);
-
-				$order_products[] = array(
-					'id'           => $product['product_id'],
-					'price'        => $product['price'],
-					'categories'   => $categories,
-					'is_available' => $product['stock'],
-					'amount'       => $product['quantity']
-				);
+	public function exportOrder($route, $order_id = false) {
+		if ($this->config->get('rees46_tracking_status')) {
+			if (version_compare(VERSION, '2.2', '<')) {
+				$order_id = $route;
 			}
 
-			$data[] = array(
-				'id'         => $order_id,
-				'user_id'    => $result['customer_id'],
-				'user_email' => $result['email'],
-				'date'       => strtotime($result['date_added']),
-				'items'      => $order_products
-			);
+			$this->load->model('module/rees46');
 
-			if (!empty($data)) {
-				$params['shop_id'] = $this->config->get('rees46_shop_id');
-				$params['shop_secret'] = $this->config->get('rees46_secret_key');
-				$params['orders'] = $data;
+			$result = $this->model_module_rees46->getOrder($order_id);
 
-				$url = 'http://api.rees46.com/import/orders';
+			if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
+				$order_products = array();
 
-				$return = $this->curl($url, json_encode($params, true));
+				$products = $this->model_module_rees46->getOrderProducts($order_id);
 
-				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: error autoexport order_id = ' . $order_id . ' [' . $return['info']['http_code'] . ']');
-					}
-				} else {
-					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: success autoexport order_id = ' . $order_id);
+				foreach ($products as $product) {
+					$categories = array();
+
+					$categories = $this->model_module_rees46->getProductCategories($product['product_id']);
+
+					$order_products[] = array(
+						'id'           => $product['product_id'],
+						'price'        => $product['price'],
+						'categories'   => $categories,
+						'is_available' => $product['stock'],
+						'amount'       => $product['quantity']
+					);
+				}
+
+				$data[] = array(
+					'id'         => $order_id,
+					'user_id'    => $result['customer_id'],
+					'user_email' => $result['email'],
+					'date'       => strtotime($result['date_added']),
+					'items'      => $order_products
+				);
+
+				if (!empty($data)) {
+					$params['shop_id'] = $this->config->get('rees46_shop_id');
+					$params['shop_secret'] = $this->config->get('rees46_secret_key');
+					$params['orders'] = $data;
+
+					$url = 'http://api.rees46.com/import/orders';
+
+					$return = $this->curl($url, json_encode($params, true));
+
+					if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
+						if ($this->config->get('rees46_log')) {
+							$this->log->write('REES46 log: error autoexport order_id = ' . $order_id . ' [' . $return['info']['http_code'] . ']');
+						}
+					} else {
+						if ($this->config->get('rees46_log')) {
+							$this->log->write('REES46 log: success autoexport order_id = ' . $order_id);
+						}
 					}
 				}
 			}
 		}
 	}
 
-	public function exportStatus($order) {
+	public function exportStatus($route, $order_id = false, $order_status_id = false) {
 		if ($this->config->get('rees46_tracking_status')) {
-			if ($this->config->get('rees46_status_created') && in_array($order['order_status_id'], $this->config->get('rees46_status_created'))) {
+			if (version_compare(VERSION, '2.2', '<')) {
+				$order_id = $route['order_id'];
+				$order_status_id = $route['order_status_id'];
+			}
+
+			if ($this->config->get('rees46_status_created') && in_array($order_status_id, $this->config->get('rees46_status_created'))) {
 				$status = 0;
-			} elseif ($this->config->get('rees46_status_completed') && in_array($order['order_status_id'], $this->config->get('rees46_status_completed'))) {
+			} elseif ($this->config->get('rees46_status_completed') && in_array($order_status_id, $this->config->get('rees46_status_completed'))) {
 				$status = 1;
-			} elseif ($this->config->get('rees46_status_cancelled') && in_array($order['order_status_id'], $this->config->get('rees46_status_cancelled'))) {
+			} elseif ($this->config->get('rees46_status_cancelled') && in_array($order_status_id, $this->config->get('rees46_status_cancelled'))) {
 				$status = 2;
 			}
 
 			if (isset($status)) {
 				$data[] = array(
-					'id'     => $order['order_id'],
+					'id'     => $order_id,
 					'status' => $status
 				);
 
@@ -328,11 +339,11 @@ class ControllerModuleRees46 extends Controller {
 
 				if ($return['info']['http_code'] < 200 || $return['info']['http_code'] >= 300) {
 					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: error autoexport status of order_id = ' . $order['order_id'] . ' [' . $return['info']['http_code'] . ']');
+						$this->log->write('REES46 log: error autoexport status = ' . $order_status_id . ' of order_id = ' . $order_id . ' [' . $return['info']['http_code'] . ']');
 					}
 				} else {
 					if ($this->config->get('rees46_log')) {
-						$this->log->write('REES46 log: success autoexport status of order_id = ' . $order['order_id']);
+						$this->log->write('REES46 log: success autoexport status = ' . $order_status_id . ' of order_id = ' . $order_id);
 					}
 				}
 			}

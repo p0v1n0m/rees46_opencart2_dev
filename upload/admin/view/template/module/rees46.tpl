@@ -269,7 +269,7 @@
 												<div class="col-sm-10">
 													<?php foreach ($languages as $language) { ?>
 													<div class="input-group pull-left">
-													<span class="input-group-addon"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>
+													<span class="input-group-addon"><img src="<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>
 													<input type="text" name="module[<?php echo $module['module_id']; ?>][title][<?php echo $language['language_id']; ?>]" value="<?php echo $module['setting']['title'][$language['language_id']]; ?>" id="input-title<?php echo $module['module_id']; ?>" class="form-control" />
 													</div>
 													<?php } ?>
@@ -468,7 +468,7 @@ function addModule() {
 	html += '		<div class="col-sm-10">';
 	<?php foreach ($languages as $language) { ?>
 	html += '			<div class="input-group pull-left">';
-	html += '				<span class="input-group-addon"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>';
+	html += '				<span class="input-group-addon"><img src="<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> </span>';
 	html += '				<input type="text" name="module[' + module_row + '][title][<?php echo $language['language_id']; ?>]" value="" id="input-title' + module_row + '" class="form-control" />';
 	html += '			</div>';
 	<?php } ?>
