@@ -218,7 +218,7 @@ class ControllerModuleRees46 extends Controller {
 		} elseif ($this->config->get('rees46_xml_currency')) {
 			$data['rees46_xml_currency'] = $this->config->get('rees46_xml_currency');
 		} else {
-			$data['rees46_xml_currency'] = array();
+			$data['rees46_xml_currency'] = $this->config->get('config_currency');
 		}
 
 		if (isset($this->request->get['module_id'])) {
@@ -406,7 +406,7 @@ class ControllerModuleRees46 extends Controller {
 
 						$json['success'] = sprintf($this->language->get('text_processing_' . $this->request->post['type']), $next * $limit ? $results_total : 0, $results_total);
 					} else {
-						$json['success'] = sprintf($this->language->get('text_success_' . $this->request->post['type']), $results_total, $results_total);
+						$json['success'] = sprintf($this->language->get('text_success_' . $this->request->post['type']), $results_total);
 
 						if ($this->config->get('rees46_log')) {
 							$this->log->write('REES46 log: success export ' . $this->request->post['type'] . ' (' . $results_total . ')');
@@ -743,9 +743,9 @@ class ControllerModuleRees46 extends Controller {
 				$xml .= '      <offer id="' . $product['product_id'] . '" available="' . ($product['quantity'] > 0 ? 'true' : 'false') . '">' . "\n";
 
 				if ($this->request->server['HTTPS']) {
-					$xml .= '        <url>' . htmlspecialchars_decode(HTTPS_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
+					$xml .= '        <url>' . $this->replacer(HTTPS_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
 				} else {
-					$xml .= '        <url>' . htmlspecialchars_decode(HTTP_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
+					$xml .= '        <url>' . $this->replacer(HTTP_CATALOG . 'index.php?route=product/product&product_id=' . $product['product_id']) . '</url>' . "\n";
 				}
 
 				if ($product['special'] && $product['price'] > $product['special']) {
@@ -770,7 +770,11 @@ class ControllerModuleRees46 extends Controller {
 				}
 
 				$xml .= '        <name>' . $this->replacer($product['name']) . '</name>' . "\n";
-				$xml .= '        <vendor>' . $this->replacer($product['manufacturer']) . '</vendor>' . "\n";
+
+				if ($product['manufacturer']) {
+					$xml .= '        <vendor>' . $this->replacer($product['manufacturer']) . '</vendor>' . "\n";
+				}
+
 				$xml .= '        <model>' . $this->replacer($product['model']) . '</model>' . "\n";
 				$xml .= '        <description><![CDATA[' . strip_tags(htmlspecialchars_decode($product['description']), '<h3>, <ul>, <li>, <p>, <br>') . ']]></description>' . "\n";
 				$xml .= '      </offer>' . "\n";

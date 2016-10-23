@@ -19,10 +19,10 @@ $_['button_generate']             = 'Start Generate';
 // Text
 $_['text_module']                 = 'Modules';
 $_['text_success']                = 'Success: You have modified REES46 module!';
-$_['text_processing_orders']      = 'Processing: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
-$_['text_success_orders']         = 'Success: You have exported <b>%s</b> of <b>%s</b> orders into REES46!';
+$_['text_processing_orders']      = 'Processing: You have exported <b>%s</b> of <b>%s</b> selected orders into REES46!';
+$_['text_success_orders']         = 'Success: You have exported all <b>%s</b> selected orders into REES46!';
 $_['text_processing_subscribers'] = 'Processing: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
-$_['text_success_subscribers']    = 'Success: You have exported <b>%s</b> of <b>%s</b> selected customers into REES46!';
+$_['text_success_subscribers']    = 'Success: You have exported all <b>%s</b> selected customers into REES46!';
 $_['text_error_export']           = 'Error: No data for export!';
 $_['text_success_check']          = 'Success: File <b>%s</b> loaded!';
 $_['text_error_check']            = 'Error: You need to load file <b>%s</b>!';

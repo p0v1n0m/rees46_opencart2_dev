@@ -1,7 +1,13 @@
 # Changelog
 
+## 1.4.4
+* Load config_currency if not there is xml currency
+* Fixed product urls in xml
+* Hide manufacturer xml tag if empty
+* More edit translation
+
 ## 1.4.3
-* Hide alert if there is a shop id and key
+* Hide alert if not there is shop id and key
 
 ## 1.4.2
 * Removal xml if status disabled

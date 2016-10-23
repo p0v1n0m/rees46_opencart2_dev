@@ -298,11 +298,11 @@
 												<div class="col-sm-10">
 													<select name="module[<?php echo $module['module_id']; ?>][template]" id="input-template<?php echo $module['module_id']; ?>" class="form-control">
 														<option value="rees46_default" <?php if ($module['setting']['template'] == 'rees46_default') { ?>selected="selected"<?php } ?>><?php echo $text_template_default; ?></option>
-														<option value="rees46_basic" <?php if ($module['setting']['template'] == 'rees46_basic') { ?>selected="selected"<?php } ?>><?php echo $text_template_basic; ?></option>
 														<option value="bestseller" <?php if ($module['setting']['template'] == 'bestseller') { ?>selected="selected"<?php } ?>><?php echo $text_template_bestseller; ?></option>
 														<option value="featured" <?php if ($module['setting']['template'] == 'featured') { ?>selected="selected"<?php } ?>><?php echo $text_template_featured; ?></option>
 														<option value="latest" <?php if ($module['setting']['template'] == 'latest') { ?>selected="selected"<?php } ?>><?php echo $text_template_latest; ?></option>
 														<option value="special" <?php if ($module['setting']['template'] == 'special') { ?>selected="selected"<?php } ?>><?php echo $text_template_special; ?></option>
+														<option value="rees46_basic" <?php if ($module['setting']['template'] == 'rees46_basic') { ?>selected="selected"<?php } ?>><?php echo $text_template_basic; ?></option>
 													</select>
 												</div>
 											</div>
@@ -497,11 +497,11 @@ function addModule() {
 	html += '		<div class="col-sm-10">';
 	html += '			<select name="module[' + module_row + '][template]" id="input-template' + module_row + '" class="form-control">';
 	html += '				<option value="rees46_default"><?php echo $text_template_default; ?></option>';
-	html += '				<option value="rees46_basic"><?php echo $text_template_basic; ?></option>';
 	html += '				<option value="bestseller"><?php echo $text_template_bestseller; ?></option>';
 	html += '				<option value="featured"><?php echo $text_template_featured; ?></option>';
 	html += '				<option value="latest"><?php echo $text_template_latest; ?></option>';
 	html += '				<option value="special"><?php echo $text_template_special; ?></option>';
+	html += '				<option value="rees46_basic"><?php echo $text_template_basic; ?></option>';
 	html += '			</select>';
 	html += '		</div>';
 	html += '	</div>';
