@@ -330,33 +330,35 @@ class ControllerModuleRees46 extends Controller {
 
 				$data = array();
 
-				foreach ($results as $result) {
-					if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
-						$order_products = array();
+				if ($results) {
+					foreach ($results as $result) {
+						if (($this->config->get('rees46_status_created') && in_array($result['order_status_id'], $this->config->get('rees46_status_created'))) || ($this->config->get('rees46_status_completed') && in_array($result['order_status_id'], $this->config->get('rees46_status_completed'))) || ($this->config->get('rees46_status_cancelled') && in_array($result['order_status_id'], $this->config->get('rees46_status_cancelled')))) {
+							$order_products = array();
 
-						$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
+							$products = $this->model_module_rees46->getOrderProducts($result['order_id']);
 
-						foreach ($products as $product) {
-							$categories = array();
+							foreach ($products as $product) {
+								$categories = array();
 
-							$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
+								$categories = $this->model_catalog_product->getProductCategories($product['product_id']);
 
-							$order_products[] = array(
-								'id'           => $product['product_id'],
-								'price'        => $product['price'],
-								'categories'   => $categories,
-								'is_available' => $product['stock'],
-								'amount'       => $product['quantity']
+								$order_products[] = array(
+									'id'           => $product['product_id'],
+									'price'        => $product['price'],
+									'categories'   => $categories,
+									'is_available' => $product['stock'],
+									'amount'       => $product['quantity']
+								);
+							}
+
+							$data[] = array(
+								'id'         => $result['order_id'],
+								'user_id'    => $result['customer_id'],
+								'user_email' => $result['email'],
+								'date'       => strtotime($result['date_added']),
+								'items'      => $order_products
 							);
 						}
-
-						$data[] = array(
-							'id'         => $result['order_id'],
-							'user_id'    => $result['customer_id'],
-							'user_email' => $result['email'],
-							'date'       => strtotime($result['date_added']),
-							'items'      => $order_products
-						);
 					}
 				}
 			} elseif ($this->request->post['type'] == 'subscribers') {
@@ -370,11 +372,13 @@ class ControllerModuleRees46 extends Controller {
 
 				$data = array();
 
-				foreach ($results as $result) {
-					$data[] = array(
-						'id'    => $result['customer_id'],
-						'email' => $result['email']
-					);
+				if ($results) {
+					foreach ($results as $result) {
+						$data[] = array(
+							'id'    => $result['customer_id'],
+							'email' => $result['email']
+						);
+					}
 				}
 			}
 

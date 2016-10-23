@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.5
+* Fixed empty selection for export
+
 ## 1.4.4
 * Load config_currency if not there is xml currency
 * Fixed product urls in xml
