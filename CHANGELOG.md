@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.3
+* Hide alert if there is a shop id and key
+
 ## 1.4.2
 * Removal xml if status disabled
 * Edit translation

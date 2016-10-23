@@ -37,11 +37,13 @@
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-settings">
+							<?php if ($rees46_shop_id == '' && $rees46_secret_key == '') { ?>
 							<div class="form-group">
 								<div class="col-sm-12">
 									<div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_info_1; ?><button type="button" class="close" data-dismiss="alert">&times;</button></div>
 								</div>
 							</div>
+							<?php } ?>
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="input-shop_id"><?php echo $entry_shop_id; ?></label>
 								<div class="col-sm-10">
