@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.0
+* Redone the order tracking
+
 ## 1.4.6
 * More edit export translation
 
