@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+* More compatibility with opencart 2.2
+* Update README
+
 ## 1.6.0
 * Compatibility with opencart 2.2
 
