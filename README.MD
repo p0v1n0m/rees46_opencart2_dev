@@ -1,4 +1,4 @@
-# REES46 for OpenCart
+# REES46 for OpenCart 2
 
 ## 1. Создание магазина
 
